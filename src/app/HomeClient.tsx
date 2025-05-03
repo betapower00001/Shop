@@ -15,17 +15,14 @@ import BlogSection from '@/components/BlogSection'
 import Review from '@/components/Review'
 import Newletter from '@/components/Newsletter'
 import Footer from '@/components/Footer'
-<<<<<<< HEAD
 import LogoPic from '@/components/Img/logo-infinity.png'
-=======
->>>>>>> a37fa679d36bc39998357b074b7647777b12afa0
 
 export default function HomeClient() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const img = new Image()
-    img.src = '/img/logo-infinity.png'
+    img.src = LogoPic.src
     img.onload = () => setTimeout(() => setLoading(false), 300)
   }, [])
 
@@ -33,11 +30,7 @@ export default function HomeClient() {
     <>
       {loading && (
         <div className="loading-overlay">
-<<<<<<< HEAD
           <img src={LogoPic.src} width="200" alt="Loading Logo" />
-=======
-          <img src="/img/logo-infinity.png" width="200" alt="Loading Logo" />
->>>>>>> a37fa679d36bc39998357b074b7647777b12afa0
           <BounceLoader color="white" loading={loading} size={40} />
         </div>
       )}
