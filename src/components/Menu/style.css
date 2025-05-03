@@ -1,0 +1,51 @@
+/* ลดความสูง Navbar ให้มากที่สุด */
+.slim-navbar {
+  padding-top: 0rem;
+  padding-bottom: 0rem;
+  min-height: 36px !important; /* ปรับตามที่ต้องการ */
+  background-color: rgba(2, 13, 75, 0.959) !important; /* ใช้ rgba แทน bg="dark" */
+  backdrop-filter: blur(4px); /* เพิ่มเบลอพื้นหลัง */
+}
+
+/* ย่อโลโก้และเนื้อหาภายในให้สมดุล */
+.slim-navbar .navbar-brand {
+  padding: 0;
+  margin: 0;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* ปรับโลโก้ให้เล็กลงอีก */
+.slim-navbar .navbar-brand img {
+  height: 38px;
+  width: auto;
+  margin-right: 6px;
+}
+
+/* ลดความสูง Nav link */
+.navbar-links .nav-link {
+  padding: 0.2rem 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+/* ย่อขนาด Hamburger toggle */
+.slim-navbar .navbar-toggler {
+  padding: 0.2rem 0.4rem;
+  font-size: 1rem;
+  line-height: 1;
+}
+.responsive-heading {
+  font-size: clamp(1.5rem, 5vw, 3rem);
+}
+
+.responsive-subheading {
+  font-size: clamp(1rem, 3.5vw, 1.8rem);
+}
+
+.responsive-button {
+  font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+}
