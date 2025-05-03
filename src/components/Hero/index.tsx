@@ -34,6 +34,7 @@ const HeroSection: React.FC = () => {
               }}
             >
               <motion.h1  style={{ textAlign:'center' }} className="fw-bold mb-4" variants={fadeInUp} custom={0}>
+              <motion.h1 className="fw-bold mb-4" variants={fadeInUp} custom={0}>
                 รับทำการตลาด<br /> “สายมูเตลู”
               </motion.h1>
 
