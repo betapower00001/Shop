@@ -1,29 +1,29 @@
-"use client";
+'use client'
 
-import { useState, useEffect } from 'react';
-import BounceLoader from "react-spinners/DotLoader";
-import HeaderNavbar from '@/components/Menu/indexnavbar';
-import Hero from '@/components/Hero';
-import IconMarket from '@/components/IconMarket';
-import Content1 from '@/components/Content';
-import MarketingServices from '@/components/MarketingServices';
-import Content3 from '@/components/Content3';
-import Content4 from '@/components/Content4';
-import STPMarketing from '@/components/STPMarketing';
-import DigitalTouchpoint from '@/components/DigitalTouchpoint';
-import BlogSection from '@/components/BlogSection';
-import Review from '@/components/Review';
-import Newletter from '@/components/Newsletter';
-import Footer from '@/components/Footer';
+import { useState, useEffect } from 'react'
+import BounceLoader from 'react-spinners/DotLoader'
+import HeaderNavbar from '@/components/Menu/indexnavbar'
+import Hero from '@/components/Hero'
+import IconMarket from '@/components/IconMarket'
+import Content1 from '@/components/Content'
+import MarketingServices from '@/components/MarketingServices'
+import Content3 from '@/components/Content3'
+import Content4 from '@/components/Content4'
+import STPMarketing from '@/components/STPMarketing'
+import DigitalTouchpoint from '@/components/DigitalTouchpoint'
+import BlogSection from '@/components/BlogSection'
+import Review from '@/components/Review'
+import Newletter from '@/components/Newsletter'
+import Footer from '@/components/Footer'
 
-export default function Home() {
-  const [loading, setLoading] = useState(true);
+export default function HomeClient() {
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const img = new Image();
-    img.src = "/img/logo-infinity.png";
-    img.onload = () => setTimeout(() => setLoading(false), 300);
-  }, []);
+    const img = new Image()
+    img.src = '/img/logo-infinity.png'
+    img.onload = () => setTimeout(() => setLoading(false), 300)
+  }, [])
 
   return (
     <>
@@ -33,6 +33,7 @@ export default function Home() {
           <BounceLoader color="white" loading={loading} size={40} />
         </div>
       )}
+
       {!loading && (
         <>
           <HeaderNavbar />
@@ -53,5 +54,5 @@ export default function Home() {
         </>
       )}
     </>
-  );
+  )
 }
