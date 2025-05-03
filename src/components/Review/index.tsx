@@ -54,7 +54,7 @@ const TestimonialsCarousel = () => {
                           <FaQuoteRight className="text-primary fs-3 mb-3" />
                           <div>
                             <img
-                              src={item.image}
+                              src={item.image.src}
                               alt={item.name}
                               width="60"
                               height="60"
