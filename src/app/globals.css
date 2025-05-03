@@ -1,0 +1,47 @@
+/* รีเซ็ตพื้นฐาน */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+  font-family: 'Anuphan', sans-serif;
+  background-color: #fff;
+  color: #000;
+  scroll-behavior: smooth;
+}
+
+/* กำหนด layout หลักของ Next.js */
+#__next {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  align-items: center;
+}
+
+/* คอนเทนเนอร์หลัก */
+.main-container {
+  max-width: 1200px;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* โหลดหน้าจอแบบ overlay */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #0a3e8e;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loading-overlay img {
+  margin-bottom: 20px;
+}
