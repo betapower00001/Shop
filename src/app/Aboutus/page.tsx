@@ -83,7 +83,7 @@ export default function Home() {
                 />
                 <h3 className={styles.serviceTitle}>ทำการตลาดออนไลน์</h3>
                 <p className={styles.serviceDescription}>
-                  เราทำตลาดออนไลน์แบบใหม่ "สายมู"
+                  เราทำตลาดออนไลน์แบบใหม่ &quot;สายมู&quot;
                   เพื่อดึงดูดพลังงานและสร้างยอดขายที่ปัง
                 </p>
               </div>
