@@ -1,4 +1,4 @@
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col } from "react-bootstrap";
 import {
   FaFacebookF,
   FaYoutube,
@@ -6,9 +6,9 @@ import {
   FaMapMarkerAlt,
   FaPhone,
   FaEnvelope,
-} from 'react-icons/fa';
-import logo from '../Img/logo-infinity.png'; // เปลี่ยน path ตามที่ใช้จริง
-import './style.css';
+} from "react-icons/fa";
+import logo from "../Img/logo-infinity.png"; // ปรับ path ตามโปรเจกต์ของคุณ
+import "./style.css";
 
 const Footer = () => {
   return (
@@ -22,11 +22,12 @@ const Footer = () => {
                 src={logo.src}
                 alt="Infinity Logo"
                 className="mb-3 mx-auto d-block"
-                style={{ maxWidth: '180px' }}
+                style={{ maxWidth: "180px" }}
               />
               <p>
                 <FaMapMarkerAlt className="me-2" />
-                48/65 หมู่บ้านพรีเมี่ยมเพลส ซอยคู้บอนรามอินทรา<br />
+                48/65 หมู่บ้านพรีเมี่ยมเพลส ซอยคู้บอนรามอินทรา
+                <br />
                 ถนนรามอินทรา-ออเงิน เขตคันนายาว กรุงเทพฯ 10230
               </p>
               <div className="d-flex flex-column flex-sm-row justify-content-center justify-content-md-start align-items-center gap-3 mt-2">
@@ -45,9 +46,15 @@ const Footer = () => {
             <Col md={2} className="text-center text-md-start">
               <h6 className="fw-bold">เมนู</h6>
               <ul className="list-unstyled">
-                <li><a href="#">เกี่ยวกับเรา</a></li>
-                <li><a href="#">บริการ</a></li>
-                <li><a href="#">บทความ</a></li>
+                <li>
+                  <a href="#">เกี่ยวกับเรา</a>
+                </li>
+                <li>
+                  <a href="#">บริการ</a>
+                </li>
+                <li>
+                  <a href="#">บทความ</a>
+                </li>
               </ul>
             </Col>
 
@@ -55,10 +62,18 @@ const Footer = () => {
             <Col md={3} className="text-center text-md-start">
               <h6 className="fw-bold">การตลาด “สายมู” คืออะไร</h6>
               <ul className="list-unstyled">
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Term & Conditions</a></li>
-                <li><a href="#">Cookie Policy</a></li>
-                <li><a href="#">Contact Us</a></li>
+                <li>
+                  <a href="#">Privacy Policy</a>
+                </li>
+                <li>
+                  <a href="#">Term & Conditions</a>
+                </li>
+                <li>
+                  <a href="#">Cookie Policy</a>
+                </li>
+                <li>
+                  <a href="#">Contact Us</a>
+                </li>
               </ul>
             </Col>
 
@@ -66,14 +81,34 @@ const Footer = () => {
             <Col md={3} className="text-center text-md-start">
               <h6 className="fw-bold">ติดตามเรา</h6>
               <div className="d-flex justify-content-center justify-content-md-start gap-3 mt-2">
-                <a href="#" className="social-icon-sm"><FaFacebookF size={18} /></a>
-                <a href="#" className="social-icon-sm"><FaEnvelope size={18} /></a>
-                <a href="#" className="social-icon-sm"><FaYoutube size={18} /></a>
-                <a href="#" className="social-icon-sm"><FaTiktok size={18} /></a>
+                <a href="#" className="social-icon-sm">
+                  <FaFacebookF size={18} />
+                </a>
+                <a href="#" className="social-icon-sm">
+                  <FaEnvelope size={18} />
+                </a>
+                <a href="#" className="social-icon-sm">
+                  <FaYoutube size={18} />
+                </a>
+                <a href="#" className="social-icon-sm">
+                  <FaTiktok size={18} />
+                </a>
               </div>
             </Col>
           </Row>
         </Container>
+      </div>
+      <div
+        className="footer-bottom text-center text-white py-3"
+        style={{ backgroundColor: "#05143f" }}
+      >
+        © 2025 Copyright:{" "}
+        <a
+          href="https://imn.co.th"
+          className="text-white text-decoration-none"
+        >
+          INFINITY MARKETING NETWORK
+        </a>
       </div>
     </footer>
   );
