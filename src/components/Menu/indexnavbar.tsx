@@ -11,7 +11,7 @@ const Navbar: React.FC = () => {
     <BSNavbar expand="lg" variant="dark" sticky="top" style={{ backgroundColor: '#00195b' }}>
       <Container>
         <BSNavbar.Brand as={Link} href="/">
-          <Image src={Logo} alt="Infinity Logo" width={180} height={50} />
+          <Image src={Logo} alt="Infinity Logo" width={150} height={50} />
         </BSNavbar.Brand>
 
         <BSNavbar.Toggle aria-controls="basic-navbar-nav" />

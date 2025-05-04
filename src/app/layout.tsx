@@ -13,7 +13,7 @@ const anuphan = Anuphan({
 })
 
 export const metadata = {
-  title: 'My App',
+  title: 'Infinity Marketing Network',
   description: '...',
 }
 
