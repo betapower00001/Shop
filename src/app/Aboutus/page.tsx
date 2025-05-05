@@ -11,7 +11,7 @@ import Icon1 from "@/components/Img/multimedia.png";
 import Icon2 from "@/components/Img/online-rating.png";
 import Icon3 from "@/components/Img/web-design.png";
 
-import BounceLoader from "react-spinners/DotLoader";
+import BounceLoader from "react-spinners/SyncLoader";
 import { useState, useEffect } from "react";
 import LogoPic from "@/components/Img/logo-infinity.png";
 
@@ -29,7 +29,7 @@ export default function Home() {
       {loading && (
         <div className="loading-overlay">
           <img src={LogoPic.src} width="200" alt="Loading Logo" />
-          <BounceLoader color="white" loading={loading} size={40} />
+          <BounceLoader color="white" loading={loading} size={12.5} />
         </div>
       )}
 

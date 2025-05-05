@@ -26,7 +26,7 @@ const Navbar: React.FC = () => {
               เกี่ยวกับเรา
             </Nav.Link>
             <Nav.Link as={Link} href="/Contact">บริการ</Nav.Link>
-            <Nav.Link href="#blog">บทความ</Nav.Link>
+            <Nav.Link as={Link} href="/Articles">บทความ</Nav.Link>
             <Nav.Link as={Link} href="/Contact" className="me-4">
               ติดต่อ
             </Nav.Link>

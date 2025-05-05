@@ -8,7 +8,7 @@ import Footer from "@/components/Footer";
 import Newletter from "@/components/Newsletter";
 import { FaFacebookF, FaLine, FaInstagram } from "react-icons/fa";
 
-import BounceLoader from "react-spinners/DotLoader";
+import BounceLoader from "react-spinners/SyncLoader";
 import { useState, useEffect } from "react";
 import LogoPic from "@/components/Img/logo-infinity.png";
 
@@ -26,7 +26,7 @@ const ContactPage: React.FC = () => {
       {loading && (
         <div className="loading-overlay">
           <img src={LogoPic.src} width="200" alt="Loading Logo" />
-          <BounceLoader color="white" loading={loading} size={40} />
+          <BounceLoader color="white" loading={loading} size={12.5} />
         </div>
       )}
 

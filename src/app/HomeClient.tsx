@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import BounceLoader from 'react-spinners/DotLoader'
+import BounceLoader from 'react-spinners/SyncLoader'
 import HeaderNavbar from '@/components/Menu/indexnavbar'
 import Hero from '@/components/Hero'
 import IconMarket from '@/components/IconMarket'
@@ -31,7 +31,7 @@ export default function HomeClient() {
       {loading && (
         <div className="loading-overlay">
           <img src={LogoPic.src} width="200" alt="Loading Logo" />
-          <BounceLoader color="white" loading={loading} size={40} />
+          <BounceLoader color="white" loading={loading} size={12.5} />
         </div>
       )}
 
