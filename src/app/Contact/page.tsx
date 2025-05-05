@@ -108,7 +108,7 @@ const ContactPage: React.FC = () => {
                 <div className="rounded-4 overflow-hidden shadow-sm">
                   <iframe
                     title="Google Map"
-                    src="https://www.google.com/maps/embed?pb=..." // ลิงก์แผนที่ของคุณ
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3874.070443864393!2d100.62690932413533!3d13.834808495368183!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x311d629af6b581c9%3A0x85b6b879c042a20a!2zUHJlbWl1bSBQbGFjZSBFa2FtYWktUmFtaW50cmEg4Liq4Li44LiE4LiZ4LiY4Liq4Lin4Lix4Liq4LiU4Li04LmM!5e0!3m2!1sth!2sth!4v1746415928802!5m2!1sth!2sth" // ลิงก์แผนที่ของคุณ
                     width="100%"
                     height="350"
                     style={{ border: 0 }}
