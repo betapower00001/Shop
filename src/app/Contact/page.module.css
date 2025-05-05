@@ -1,0 +1,50 @@
+/* โหลดหน้าจอแบบ overlay */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #0a3e8e;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loading-overlay img {
+  margin-bottom: 20px;
+}
+.socialButton {
+  border: none;
+  color: white;
+  font-size: 1.1rem;
+  border-radius: 2rem;
+  padding: 0.6rem 1.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.socialButton:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+/* Gradient styles */
+.facebook {
+  background: linear-gradient(135deg, #3b5998, #8b9dc3);
+}
+
+.line {
+  background: linear-gradient(135deg, #00c300, #4cd964);
+}
+
+.instagram {
+  background: linear-gradient(135deg, #fd1d1d, #fcb045, #833ab4);
+}
+
+

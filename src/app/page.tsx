@@ -8,10 +8,10 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'INFINITY DIGITAL | วางแผนการตลาดครบวงจร',
     description: 'ขยายธุรกิจของคุณด้วยกลยุทธ์การตลาดที่แม่นยำ',
-    url: 'https://www.yourdomain.com',
+    url: 'https://imn.co.th',
     images: [
       {
-        url: '/img/og-image.jpg',
+        url: '/img/logo-infinity.png',
         width: 800,
         height: 600,
         alt: 'og image',
