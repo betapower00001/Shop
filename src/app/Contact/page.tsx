@@ -48,7 +48,7 @@ const ContactPage: React.FC = () => {
                     <Button
                       size="lg"
                       className={`${styles.socialButton} ${styles.facebook}`}
-                      href="https://facebook.com/yourpage"
+                      href="https://www.facebook.com/8InfinityMarketingTeam"
                       target="_blank"
                     >
                       <FaFacebookF size={20} className="me-2" />
@@ -57,7 +57,7 @@ const ContactPage: React.FC = () => {
                     <Button
                       size="lg"
                       className={`${styles.socialButton} ${styles.line}`}
-                      href="https://line.me/R/ti/p/~yourline"
+                      href="https://line.me/ti/p/%40imn.th"
                       target="_blank"
                     >
                       <FaLine size={20} className="me-2" />
@@ -66,7 +66,7 @@ const ContactPage: React.FC = () => {
                     <Button
                       size="lg"
                       className={`${styles.socialButton} ${styles.instagram}`}
-                      href="https://instagram.com/youraccount"
+                      href="https://instagram.com"
                       target="_blank"
                     >
                       <FaInstagram size={20} className="me-2" />

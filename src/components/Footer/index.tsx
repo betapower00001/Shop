@@ -1,3 +1,5 @@
+"use client";
+
 import { Container, Row, Col } from "react-bootstrap";
 import {
   FaFacebookF,
@@ -46,14 +48,20 @@ const Footer = () => {
             <Col md={2} className="text-center text-md-start">
               <h6 className="fw-bold">เมนู</h6>
               <ul className="list-unstyled">
+              <li>
+                  <a href="/">หน้าแรก</a>
+                </li>
                 <li>
-                  <a href="#">เกี่ยวกับเรา</a>
+                  <a href="/Aboutus">เกี่ยวกับเรา</a>
                 </li>
                 <li>
                   <a href="#">บริการ</a>
                 </li>
                 <li>
-                  <a href="#">บทความ</a>
+                  <a href="/Articles">บทความ</a>
+                </li>
+                <li>
+                  <a href="/Contact">ติดต่อ</a>
                 </li>
               </ul>
             </Col>
@@ -63,16 +71,16 @@ const Footer = () => {
               <h6 className="fw-bold">การตลาด “สายมู” คืออะไร</h6>
               <ul className="list-unstyled">
                 <li>
-                  <a href="#">Privacy Policy</a>
+                  <a href="#">รู้จักสายมู</a>
                 </li>
                 <li>
-                  <a href="#">Term & Conditions</a>
+                  <a href="#">กลยุทธ์มูเตลู</a>
                 </li>
                 <li>
-                  <a href="#">Cookie Policy</a>
+                  <a href="#">ตัวอย่างเด็ด</a>
                 </li>
                 <li>
-                  <a href="#">Contact Us</a>
+                  <a href="#">ข้อควรระวัง</a>
                 </li>
               </ul>
             </Col>
@@ -81,16 +89,16 @@ const Footer = () => {
             <Col md={3} className="text-center text-md-start">
               <h6 className="fw-bold">ติดตามเรา</h6>
               <div className="d-flex justify-content-center justify-content-md-start gap-3 mt-2">
-                <a href="#" className="social-icon-sm">
+                <a href="https://www.facebook.com/8InfinityMarketingTeam" target="_blank" className="social-icon-sm">
                   <FaFacebookF size={18} />
                 </a>
-                <a href="#" className="social-icon-sm">
+                <a href="mailto:imn.th@hotmail.com" target="_blank" className="social-icon-sm">
                   <FaEnvelope size={18} />
                 </a>
-                <a href="#" className="social-icon-sm">
+                <a href="#" target="_blank" className="social-icon-sm">
                   <FaYoutube size={18} />
                 </a>
-                <a href="#" className="social-icon-sm">
+                <a href="#" target="_blank" className="social-icon-sm">
                   <FaTiktok size={18} />
                 </a>
               </div>
