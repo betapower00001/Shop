@@ -22,10 +22,9 @@ const Navbar: React.FC = () => {
         <BSNavbar.Toggle aria-controls="basic-navbar-nav" />
         <BSNavbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto d-flex align-items-cente">
-            <Nav.Link as={Link} href="/Aboutus">
-              เกี่ยวกับเรา
-            </Nav.Link>
-            <Nav.Link as={Link} href="/Contact">บริการ</Nav.Link>
+          <Nav.Link as={Link} href="/">หน้าแรก</Nav.Link>
+            <Nav.Link as={Link} href="/Aboutus">เกี่ยวกับเรา</Nav.Link>
+            <Nav.Link as={Link} href="#">บริการ</Nav.Link>
             <Nav.Link as={Link} href="/Articles">บทความ</Nav.Link>
             <Nav.Link as={Link} href="/Contact" className="me-4">
               ติดต่อ
