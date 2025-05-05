@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Badge, Button } from 'react-bootstrap';
 import Piccontenct1 from '../Img/contant-4.jpg';
 import Piccontenct2 from '../Img/contant-2.jpg';
 import Piccontenct3 from '../Img/contant-3.jpg';
+import Piccontenct4 from '../Img/contant-1.jpg'
 import Link from "next/link";
 import styles from './BlogSection.module.css';
 
@@ -22,15 +23,15 @@ const blogPosts: BlogPost[] = [
   },
   {
     title: 'Search Intent คืออะไร ทำ SEO ให้แม่นเข้าเป้า',
-    category: 'WordPress',
-    image: Piccontenct2.src,
-    link: '#',
+    category: 'SEO',
+    image: Piccontenct4.src,
+    link: '/Articles/Search-Intent-SEO',
   },
   {
-    title: 'เปลี่ยน WordPress ให้แซงคู่แข่ง',
-    category: 'SEO',
-    image: Piccontenct3.src,
-    link: '#',
+    title: 'เว็บไซต์ WordPress คืออะไร',
+    category: 'Wordpress',
+    image: Piccontenct2.src,
+    link: '/Articles/About-Wordpress',
   },
 ];
 
