@@ -1,31 +1,32 @@
 .hoverScale:hover {
     transform: scale(1.05);
     transition: transform 0.3s ease-in-out;
-}
-
-.floatingIconsContainer {
+  }
+  
+  .floatingIconsContainer {
     position: absolute;
-    bottom: -20px;
+    bottom: 10%;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     gap: 20px;
     z-index: 10;
-}
-
-.icon img {
+    flex-wrap: nowrap;
+  }
+  
+  .icon img {
     width: 50px;
     height: 50px;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     transition: transform 0.3s ease;
-}
-
-.icon:hover img {
+  }
+  
+  .icon:hover img {
     transform: scale(1.15);
-}
-
-.floatingSocialIcons {
+  }
+  
+  .floatingSocialIcons {
     position: fixed;
     bottom: 30px;
     right: 30px;
@@ -37,23 +38,46 @@
     padding: 12px;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-/* Responsive tweaks for mobile */
-@media (max-width: 768px) {
-    .floatingSocialIcons a {
-        font-size: 20px;
+  }
+  
+  /* Responsive tweaks for tablets and mobile */
+  @media (max-width: 1024px) {
+    .floatingIconsContainer {
+      bottom: 5%;
+      gap: 15px;
     }
-
+  
     .icon img {
-        width: 40px;
-        height: 40px;
+      width: 45px;
+      height: 45px;
     }
-
+  }
+  
+  @media (max-width: 768px) {
+    .floatingIconsContainer {
+      position: relative;
+      bottom: auto;
+      left: auto;
+      transform: none;
+      margin-top: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+  
+    .icon img {
+      width: 40px;
+      height: 40px;
+    }
+  
     .floatingSocialIcons {
-        bottom: 15px;
-        right: 15px;
-        padding: 8px;
-        gap: 10px;
+      bottom: 15px;
+      right: 15px;
+      padding: 8px;
+      gap: 10px;
     }
-}
+  
+    .floatingSocialIcons a {
+      font-size: 20px;
+    }
+  }
+  
