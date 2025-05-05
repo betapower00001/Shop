@@ -34,7 +34,6 @@ const ContactPage: React.FC = () => {
         <>
           <HeaderNavbar />
           <Container className="py-5">
-          <p style={{textAlign:"center"}}>dadad</p>
             <h1 className="text-center mb-5 fw-bold">ติดต่อเรา</h1>
             <Row className="g-4">
               <Col md={6}>
