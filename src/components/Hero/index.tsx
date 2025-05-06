@@ -6,6 +6,10 @@ import { motion } from 'framer-motion';
 import { FaPhone, FaFacebook } from 'react-icons/fa';
 import { SiLine } from 'react-icons/si';
 import styles from './HeroSection.module.css'; // import CSS module
+import Icon1 from "../Img/80icon-fb-.png";
+import Icon2 from "../Img/Line-80.png";
+import Icon3 from "../Img/YB-80.png";
+import Icon4 from "../Img/tiktok-icon-free-png.png"
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -36,7 +40,7 @@ const HeroSection: React.FC = () => {
                 }}
               >
                 <motion.h1
-                  style={{ textAlign: 'center' }}
+                  style={{ textAlign: 'center', color:'#f0c670' }}
                   className="fw-bold mb-4"
                   variants={fadeInUp}
                   custom={0}
@@ -71,7 +75,8 @@ const HeroSection: React.FC = () => {
                     style={{
                       fontSize: '25px',
                       textTransform: 'capitalize',
-                      fontStyle: 'italic'
+                      fontStyle: 'italic',
+                      color:'#f0c670'
                     }}
                   >
                     เรามีการตลาดที่เพิ่มมูลค่า ใน “สายมู”<br />
@@ -141,7 +146,7 @@ const HeroSection: React.FC = () => {
                     animate={{ y: [0, -10, 0], x: [0, 5, 0] }}
                     transition={{ duration: 3, repeat: Infinity, repeatType: 'loop' }}
                   >
-                    <img src="/icons/tiktok.png" alt="TikTok" />
+                    <img src={Icon4.src} alt="TikTok" />
                   </motion.a>
 
                   <motion.a
@@ -152,7 +157,7 @@ const HeroSection: React.FC = () => {
                     animate={{ y: [0, -8, 0], x: [0, -5, 0] }}
                     transition={{ duration: 3.5, repeat: Infinity, repeatType: 'loop' }}
                   >
-                    <img src="/icons/facebook.png" alt="Facebook" />
+                    <img src={Icon1.src} alt="Facebook" />
                   </motion.a>
 
                   <motion.a
@@ -163,7 +168,7 @@ const HeroSection: React.FC = () => {
                     animate={{ y: [0, -12, 0], x: [0, 6, 0] }}
                     transition={{ duration: 4, repeat: Infinity, repeatType: 'loop' }}
                   >
-                    <img src="/icons/line.png" alt="LINE" />
+                    <img src={Icon2.src} alt="LINE" />
                   </motion.a>
 
                   <motion.a
@@ -174,7 +179,7 @@ const HeroSection: React.FC = () => {
                     animate={{ y: [0, -10, 0], x: [0, -4, 0] }}
                     transition={{ duration: 3.2, repeat: Infinity, repeatType: 'loop' }}
                   >
-                    <img src="/icons/youtube.png" alt="YouTube" />
+                    <img src={Icon3.src} alt="YouTube" />
                   </motion.a>
                 </div>
               </div>

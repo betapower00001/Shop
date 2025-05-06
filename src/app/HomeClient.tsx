@@ -16,6 +16,7 @@ import Review from '@/components/Review'
 import Newletter from '@/components/Newsletter'
 import Footer from '@/components/Footer'
 import LogoPic from '@/components/Img/logo-infinity.png'
+import ServiceGrid from '@/components/ServiceGrid/page'
 
 export default function HomeClient() {
   const [loading, setLoading] = useState(true)
@@ -40,6 +41,7 @@ export default function HomeClient() {
           <HeaderNavbar />
           <main>
             <Hero />
+            <ServiceGrid />
             <IconMarket />
             <Content1 />
             <MarketingServices />
