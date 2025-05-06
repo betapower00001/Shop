@@ -10,6 +10,7 @@ import Icon1 from "../Img/80icon-fb-.png";
 import Icon2 from "../Img/Line-80.png";
 import Icon3 from "../Img/YB-80.png";
 import Icon4 from "../Img/tiktok-icon-free-png.png"
+import Bannerlady from "../Img/im-g-16-1edit.png"
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -131,7 +132,7 @@ const HeroSection: React.FC = () => {
             <Col md={6} className="text-center mt-4 mt-md-0">
               <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
                 <motion.img
-                  src="/img/im-g-16-1edit.png"
+                  src= {Bannerlady.src}
                   alt="สายมูเตลู"
                   className="img-fluid"
                   animate={{ y: [0, -15, 0, 15, 0] }}
