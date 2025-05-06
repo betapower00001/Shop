@@ -11,6 +11,8 @@ import {
 } from "react-icons/fa";
 import logo from "../Img/logo-infinity.png"; // ปรับ path ตามโปรเจกต์ของคุณ
 import "./style.css";
+import Link from 'next/link';
+
 
 const Footer = () => {
   return (
@@ -49,19 +51,19 @@ const Footer = () => {
               <h6 className="fw-bold">เมนู</h6>
               <ul className="list-unstyled">
               <li>
-                  <a href="/">หน้าแรก</a>
+                  <Link href="/">หน้าแรก</Link>
                 </li>
                 <li>
-                  <a href="/Aboutus">เกี่ยวกับเรา</a>
+                  <Link href="/Aboutus">เกี่ยวกับเรา</Link>
                 </li>
                 <li>
-                  <a href="#">บริการ</a>
+                  <Link href="#">บริการ</Link>
                 </li>
                 <li>
-                  <a href="/Articles">บทความ</a>
+                  <Link href="/Articles">บทความ</Link>
                 </li>
                 <li>
-                  <a href="/Contact">ติดต่อ</a>
+                  <Link href="/Contact">ติดต่อ</Link>
                 </li>
               </ul>
             </Col>
@@ -71,16 +73,16 @@ const Footer = () => {
               <h6 className="fw-bold">การตลาด “สายมู” คืออะไร</h6>
               <ul className="list-unstyled">
                 <li>
-                  <a href="#">รู้จักสายมู</a>
+                  <Link href="#">รู้จักสายมู</Link>
                 </li>
                 <li>
-                  <a href="#">กลยุทธ์มูเตลู</a>
+                  <Link href="#">กลยุทธ์มูเตลู</Link>
                 </li>
                 <li>
-                  <a href="#">ตัวอย่างเด็ด</a>
+                  <Link href="#">ตัวอย่างเด็ด</Link>
                 </li>
                 <li>
-                  <a href="#">ข้อควรระวัง</a>
+                  <Link href="#">ข้อควรระวัง</Link>
                 </li>
               </ul>
             </Col>
