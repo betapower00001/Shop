@@ -43,8 +43,8 @@ const ContactPage: React.FC = () => {
                   </span></p>
                   <p><strong>โทร:</strong> <span className="text-muted">02-578-1680</span></p>
                   <p><strong>อีเมล:</strong> <span className="text-muted">imn.th@hotmail.com</span></p>
-                  <p><strong>ที่อยู่:</strong> <span className="text-muted">48/65 หมู่บ้านพรีเมี่ยมเพลส ซอยคู้บอนรามอินทรา
-                  ถนนรามอินทรา-ออเงิน เขตคันนายาว กรุงเทพฯ 10230</span></p>
+                  <p><strong>ที่อยู่:</strong> <span className="text-muted">48/65 หมู่บ้านพรีเมี่ยมเพลส ซอยสุคนธสวัสดิ์ 38
+                    ถนนรามอินทรา-เอกมัย แขวงลาดพร้าว เขตลาดพร้าว กรุงเทพมหานคร 10230</span></p>
 
                   <div className="d-flex flex-wrap gap-3 mt-4">
                     <Button

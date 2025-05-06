@@ -30,9 +30,9 @@ const Footer = () => {
               />
               <p>
                 <FaMapMarkerAlt className="me-2" />
-                48/65 หมู่บ้านพรีเมี่ยมเพลส ซอยคู้บอนรามอินทรา
+                48/65 หมู่บ้านพรีเมี่ยมเพลส ซอยสุคนธสวัสดิ์ 38 
                 <br />
-                ถนนรามอินทรา-ออเงิน เขตคันนายาว กรุงเทพฯ 10230
+                ถนนรามอินทรา-เอกมัย แขวงลาดพร้าว เขตลาดพร้าว กรุงเทพมหานคร 10230
               </p>
               <div className="d-flex flex-column flex-sm-row justify-content-center justify-content-md-start align-items-center gap-3 mt-2">
                 <span className="d-flex align-items-center">
@@ -50,7 +50,7 @@ const Footer = () => {
             <Col md={2} className="text-center text-md-start">
               <h6 className="fw-bold">เมนู</h6>
               <ul className="list-unstyled">
-              <li>
+                <li>
                   <Link href="/">หน้าแรก</Link>
                 </li>
                 <li>
