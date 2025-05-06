@@ -15,12 +15,12 @@ const services = [
     },
     {
         title: 'จัดทัวร์ไหว้พระ',
-        subtitle: 'โม-ต่างประเทศ',
+        subtitle: 'มู-ต่างประเทศ',
         icon : Icondong2.src,
     },
     {
         title: 'ทำบุญออนไลน์',
-        subtitle: '+ Content สายมู',
+        subtitle: 'Content สายมู',
         icon: Icondong3.src,
     },
     {
