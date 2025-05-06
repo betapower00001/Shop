@@ -39,10 +39,12 @@ const ContactPage: React.FC = () => {
               <Col md={6}>
                 <Card className="p-4 shadow-sm border-0 rounded-4">
                   <h4 className="mb-4 fw-semibold">ข้อมูลการติดต่อ</h4>
-                  <p><strong>บริษัท:</strong> <span className="text-muted">อินฟินิตี้ มาร์เก็ตติ้ง เน็ตเวิร์ค</span></p>
-                  <p><strong>โทร:</strong> <span className="text-muted">089-xxx-xxxx</span></p>
-                  <p><strong>อีเมล:</strong> <span className="text-muted">contact@infinity.co.th</span></p>
-                  <p><strong>ที่อยู่:</strong> <span className="text-muted">123 ถนนหลัก แขวงตัวอย่าง เขตตัวอย่าง กรุงเทพฯ</span></p>
+                  <p><strong>บริษัท:</strong> <span className="text-muted">บริษัท อินฟินิตี้ มาร์เก็ตติ้ง เน็ตเวิร์ค จำกัด
+                  </span></p>
+                  <p><strong>โทร:</strong> <span className="text-muted">02-578-1680</span></p>
+                  <p><strong>อีเมล:</strong> <span className="text-muted">imn.th@hotmail.com</span></p>
+                  <p><strong>ที่อยู่:</strong> <span className="text-muted">48/65 หมู่บ้านพรีเมี่ยมเพลส ซอยคู้บอนรามอินทรา
+                  ถนนรามอินทรา-ออเงิน เขตคันนายาว กรุงเทพฯ 10230</span></p>
 
                   <div className="d-flex flex-wrap gap-3 mt-4">
                     <Button
