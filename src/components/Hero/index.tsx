@@ -124,57 +124,59 @@ const HeroSection: React.FC = () => {
             </Col>
             {/* สุดด้านซ้าย */}
             <Col md={6} className="text-center mt-4 mt-md-0">
-              <motion.img
-                src="/img/im-g-16-1edit.png"
-                alt="สายมูเตลู"
-                className="img-fluid"
-                animate={{ y: [0, -15, 0, 15, 0] }}
-                transition={{ duration: 6, repeat: Infinity, repeatType: 'loop' }}
-              />
-              <div className={styles.floatingIconsContainer}>
-                <motion.a
-                  href="https://www.tiktok.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.icon}
-                  animate={{ y: [0, -10, 0], x: [0, 5, 0] }}
-                  transition={{ duration: 3, repeat: Infinity, repeatType: 'loop' }}
-                >
-                  <img src="/icons/tiktok.png" alt="TikTok" />
-                </motion.a>
+              <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
+                <motion.img
+                  src="/img/im-g-16-1edit.png"
+                  alt="สายมูเตลู"
+                  className="img-fluid"
+                  animate={{ y: [0, -15, 0, 15, 0] }}
+                  transition={{ duration: 6, repeat: Infinity, repeatType: 'loop' }}
+                />
+                <div className={styles.floatingIconsContainer}>
+                  <motion.a
+                    href="https://www.tiktok.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.icon}
+                    animate={{ y: [0, -10, 0], x: [0, 5, 0] }}
+                    transition={{ duration: 3, repeat: Infinity, repeatType: 'loop' }}
+                  >
+                    <img src="/icons/tiktok.png" alt="TikTok" />
+                  </motion.a>
 
-                <motion.a
-                  href="https://facebook.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.icon}
-                  animate={{ y: [0, -8, 0], x: [0, -5, 0] }}
-                  transition={{ duration: 3.5, repeat: Infinity, repeatType: 'loop' }}
-                >
-                  <img src="/icons/facebook.png" alt="Facebook" />
-                </motion.a>
+                  <motion.a
+                    href="https://facebook.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.icon}
+                    animate={{ y: [0, -8, 0], x: [0, -5, 0] }}
+                    transition={{ duration: 3.5, repeat: Infinity, repeatType: 'loop' }}
+                  >
+                    <img src="/icons/facebook.png" alt="Facebook" />
+                  </motion.a>
 
-                <motion.a
-                  href="https://line.me/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.icon}
-                  animate={{ y: [0, -12, 0], x: [0, 6, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, repeatType: 'loop' }}
-                >
-                  <img src="/icons/line.png" alt="LINE" />
-                </motion.a>
+                  <motion.a
+                    href="https://line.me/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.icon}
+                    animate={{ y: [0, -12, 0], x: [0, 6, 0] }}
+                    transition={{ duration: 4, repeat: Infinity, repeatType: 'loop' }}
+                  >
+                    <img src="/icons/line.png" alt="LINE" />
+                  </motion.a>
 
-                <motion.a
-                  href="https://youtube.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.icon}
-                  animate={{ y: [0, -10, 0], x: [0, -4, 0] }}
-                  transition={{ duration: 3.2, repeat: Infinity, repeatType: 'loop' }}
-                >
-                  <img src="/icons/youtube.png" alt="YouTube" />
-                </motion.a>
+                  <motion.a
+                    href="https://youtube.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.icon}
+                    animate={{ y: [0, -10, 0], x: [0, -4, 0] }}
+                    transition={{ duration: 3.2, repeat: Infinity, repeatType: 'loop' }}
+                  >
+                    <img src="/icons/youtube.png" alt="YouTube" />
+                  </motion.a>
+                </div>
               </div>
 
             </Col>
