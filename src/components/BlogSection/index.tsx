@@ -2,7 +2,6 @@ import React from 'react';
 import { Container, Row, Col, Card, Badge, Button } from 'react-bootstrap';
 import Piccontenct1 from '../Img/contant-4.jpg';
 import Piccontenct2 from '../Img/contant-2.jpg';
-import Piccontenct3 from '../Img/contant-3.jpg';
 import Piccontenct4 from '../Img/contant-1.jpg'
 import Link from "next/link";
 import styles from './BlogSection.module.css';
