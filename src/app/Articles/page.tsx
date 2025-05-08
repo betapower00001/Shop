@@ -56,6 +56,13 @@ const BlogPage: React.FC = () => {
             imageUrl: "/Img/contant-5.jpg",
             slug: "Mu-Sai-Business",
         },
+        {
+            id: 6,
+            title: "ทิศทาง ฮวงจุ้ย 2025",
+            summary: "เสริมพลังชีวิต เสริมโชคลาภปี 2025...",
+            imageUrl: "/Img/contant-6.jpg",
+            slug: "Feng-Shui-Direction-2025",
+        },
     ]
 
     return (
