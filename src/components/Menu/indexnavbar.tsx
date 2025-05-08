@@ -22,16 +22,15 @@ const Navbar: React.FC = () => {
         <BSNavbar.Toggle aria-controls="basic-navbar-nav" />
         <BSNavbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto d-flex align-items-cente">
-            <Nav.Link as={Link} href="/Aboutus">
-              เกี่ยวกับเรา
-            </Nav.Link>
-            <Nav.Link as={Link} href="/Contact">บริการ</Nav.Link>
-            <Nav.Link href="#blog">บทความ</Nav.Link>
+          <Nav.Link as={Link} href="/">หน้าแรก</Nav.Link>
+            <Nav.Link as={Link} href="/Aboutus">เกี่ยวกับเรา</Nav.Link>
+            <Nav.Link as={Link} href="#">บริการ</Nav.Link>
+            <Nav.Link as={Link} href="/Articles">บทความ</Nav.Link>
             <Nav.Link as={Link} href="/Contact" className="me-4">
               ติดต่อ
             </Nav.Link>
           </Nav>
-          <Button variant="primary">ปรึกษาฟรี</Button>
+          <Button variant="primary" href="https://line.me/ti/p/%40imn.th" target="_blank" >ปรึกษาฟรี</Button>
         </BSNavbar.Collapse>
       </Container>
     </BSNavbar>

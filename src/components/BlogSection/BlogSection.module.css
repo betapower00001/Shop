@@ -1,0 +1,34 @@
+.sectionWrapper {
+    animation: fadeIn 1s ease-in;
+  }
+  
+  .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-20px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .readMoreBtn {
+    transition: all 0.3s ease;
+  }
+  
+  .readMoreBtn:hover {
+    transform: scale(1.05);
+    background-color: #0d6efd;
+    color: white;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  

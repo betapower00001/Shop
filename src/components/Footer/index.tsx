@@ -1,3 +1,5 @@
+"use client";
+
 import { Container, Row, Col } from "react-bootstrap";
 import {
   FaFacebookF,
@@ -9,6 +11,8 @@ import {
 } from "react-icons/fa";
 import logo from "../Img/logo-infinity.png"; // ปรับ path ตามโปรเจกต์ของคุณ
 import "./style.css";
+import Link from 'next/link';
+
 
 const Footer = () => {
   return (
@@ -26,9 +30,9 @@ const Footer = () => {
               />
               <p>
                 <FaMapMarkerAlt className="me-2" />
-                48/65 หมู่บ้านพรีเมี่ยมเพลส ซอยคู้บอนรามอินทรา
+                48/65 หมู่บ้านพรีเมี่ยมเพลส ซอยสุคนธสวัสดิ์ 38 
                 <br />
-                ถนนรามอินทรา-ออเงิน เขตคันนายาว กรุงเทพฯ 10230
+                ถนนรามอินทรา-เอกมัย แขวงลาดพร้าว เขตลาดพร้าว กรุงเทพมหานคร 10230
               </p>
               <div className="d-flex flex-column flex-sm-row justify-content-center justify-content-md-start align-items-center gap-3 mt-2">
                 <span className="d-flex align-items-center">
@@ -47,13 +51,19 @@ const Footer = () => {
               <h6 className="fw-bold">เมนู</h6>
               <ul className="list-unstyled">
                 <li>
-                  <a href="#">เกี่ยวกับเรา</a>
+                  <Link href="/">หน้าแรก</Link>
                 </li>
                 <li>
-                  <a href="#">บริการ</a>
+                  <Link href="/Aboutus">เกี่ยวกับเรา</Link>
                 </li>
                 <li>
-                  <a href="#">บทความ</a>
+                  <Link href="#">บริการ</Link>
+                </li>
+                <li>
+                  <Link href="/Articles">บทความ</Link>
+                </li>
+                <li>
+                  <Link href="/Contact">ติดต่อ</Link>
                 </li>
               </ul>
             </Col>
@@ -63,16 +73,16 @@ const Footer = () => {
               <h6 className="fw-bold">การตลาด “สายมู” คืออะไร</h6>
               <ul className="list-unstyled">
                 <li>
-                  <a href="#">Privacy Policy</a>
+                  <Link href="#">รู้จักสายมู</Link>
                 </li>
                 <li>
-                  <a href="#">Term & Conditions</a>
+                  <Link href="#">กลยุทธ์มูเตลู</Link>
                 </li>
                 <li>
-                  <a href="#">Cookie Policy</a>
+                  <Link href="#">ตัวอย่างเด็ด</Link>
                 </li>
                 <li>
-                  <a href="#">Contact Us</a>
+                  <Link href="#">ข้อควรระวัง</Link>
                 </li>
               </ul>
             </Col>
@@ -81,16 +91,16 @@ const Footer = () => {
             <Col md={3} className="text-center text-md-start">
               <h6 className="fw-bold">ติดตามเรา</h6>
               <div className="d-flex justify-content-center justify-content-md-start gap-3 mt-2">
-                <a href="#" className="social-icon-sm">
+                <a href="https://www.facebook.com/8InfinityMarketingTeam" target="_blank" className="social-icon-sm">
                   <FaFacebookF size={18} />
                 </a>
-                <a href="#" className="social-icon-sm">
+                <a href="mailto:imn.th@hotmail.com" target="_blank" className="social-icon-sm">
                   <FaEnvelope size={18} />
                 </a>
-                <a href="#" className="social-icon-sm">
+                <a href="#" target="_blank" className="social-icon-sm">
                   <FaYoutube size={18} />
                 </a>
-                <a href="#" className="social-icon-sm">
+                <a href="#" target="_blank" className="social-icon-sm">
                   <FaTiktok size={18} />
                 </a>
               </div>

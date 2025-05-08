@@ -54,7 +54,7 @@ const STPSection = () => {
                   </ul>
                 </Card.Body>
                 <div className="px-3 pb-3">
-                  <Button variant="primary" className="w-100 rounded-pill">
+                  <Button  href="https://line.me/ti/p/%40imn.th" target="_blank" variant="primary" className="w-100 rounded-pill ">
                     ปรึกษาเรา →
                   </Button>
                 </div>
