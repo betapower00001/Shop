@@ -49,6 +49,13 @@ const BlogPage: React.FC = () => {
             imageUrl: "/Img/contant-3.jpg",
             slug: "PPC-2025",
         },
+        {
+            id: 5,
+            title: "ธุรกิจสายมู มาแรง",
+            summary: "โอกาสทองในยุคที่ความเชื่อคือพลังแห่งการตลาด...",
+            imageUrl: "/Img/contant-5.jpg",
+            slug: "Mu-Sai-Business",
+        },
     ]
 
     return (
