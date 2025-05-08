@@ -32,6 +32,7 @@ const blogPosts: BlogPost[] = [
     image: Piccontenct2.src,
     link: '/Articles/About-Wordpress',
   },
+  
 ];
 
 const BlogSection: React.FC = () => {

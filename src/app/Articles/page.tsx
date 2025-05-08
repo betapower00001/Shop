@@ -63,6 +63,13 @@ const BlogPage: React.FC = () => {
             imageUrl: "/Img/contant-6.jpg",
             slug: "Feng-Shui-Direction-2025",
         },
+        {
+            id: 7,
+            title: "อัพเดทการตลาดเทรนใหม่ 2025",
+            summary: "ใครปรับก่อน รอดก่อน โลกของการตลาดในปี 2025...",
+            imageUrl: "/Img/contant-7.jpg",
+            slug: "Update-marketing-2025",
+        },
     ]
 
     return (
