@@ -1,20 +1,19 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import BounceLoader from 'react-spinners/SyncLoader'
-import HeaderNavbar from '@/components/Menu/indexnavbar'
-import Footer from '@/components/Footer'
-import LogoPic from '@/components/Img/Shop-logo.png'
-
+import { useState, useEffect } from "react";
+import BounceLoader from "react-spinners/SyncLoader";
+import HeaderNavbar from "@/components/Menu/indexnavbar";
+import Footer from "@/components/Footer";
+import LogoPic from "@/components/Img/Shop-logo.png";
 
 export default function HomeClient() {
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const img = new Image()
-    img.src = LogoPic.src
-    img.onload = () => setTimeout(() => setLoading(false), 300)
-  }, [])
+    const img = new Image();
+    img.src = LogoPic.src;
+    img.onload = () => setTimeout(() => setLoading(false), 300);
+  }, []);
 
   return (
     <>
@@ -35,5 +34,5 @@ export default function HomeClient() {
         </>
       )}
     </>
-  )
+  );
 }
