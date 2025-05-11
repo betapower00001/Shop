@@ -1,38 +1,20 @@
-"use client";
+import ProductCard from "@/components/ProductCard";
 
-import { useState, useEffect } from "react";
-import BounceLoader from "react-spinners/SyncLoader";
-import HeaderNavbar from "@/components/Menu/indexnavbar";
-import Footer from "@/components/Footer";
-import LogoPic from "@/components/Img/Shop-logo.png";
+async function getProducts() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products`, {
+    cache: "no-store",
+  });
+  return res.json();
+}
 
-export default function HomeClient() {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const img = new Image();
-    img.src = LogoPic.src;
-    img.onload = () => setTimeout(() => setLoading(false), 300);
-  }, []);
+export default async function HomePage() {
+  const products = await getProducts();
 
   return (
-    <>
-      {loading && (
-        <div className="loading-overlay">
-          <img src={LogoPic.src} width="200" alt="Loading Logo" />
-          <BounceLoader color="white" loading={loading} size={12.5} />
-        </div>
-      )}
-
-      {!loading && (
-        <>
-          <HeaderNavbar />
-          <main>
-            ffsfs
-            <Footer />
-          </main>
-        </>
-      )}
-    </>
+    <main className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6">
+      {products.map((product: any) => (
+        <ProductCard key={product.id} product={product} />
+      ))}
+    </main>
   );
 }
