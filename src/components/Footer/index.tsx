@@ -9,7 +9,7 @@ import {
   FaPhone,
   FaEnvelope,
 } from "react-icons/fa";
-import logo from "../Img/logo-infinity.png"; // ปรับ path ตามโปรเจกต์ของคุณ
+import logo from "../Img/Shop-logo.png"; // ปรับ path ตามโปรเจกต์ของคุณ
 import "./style.css";
 import Link from 'next/link';
 

@@ -4,7 +4,7 @@ import React from "react";
 import { Container, Nav, Navbar as BSNavbar, Button } from "react-bootstrap";
 import Image from "next/image";
 import Link from "next/link";
-import Logo from "@/components/Img/logo-infinity.png";
+import Logo from "@/components/Img/Shop-logo.png";
 
 const Navbar: React.FC = () => {
   return (

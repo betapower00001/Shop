@@ -3,20 +3,9 @@
 import { useState, useEffect } from 'react'
 import BounceLoader from 'react-spinners/SyncLoader'
 import HeaderNavbar from '@/components/Menu/indexnavbar'
-import Hero from '@/components/Hero'
-import IconMarket from '@/components/IconMarket'
-import Content1 from '@/components/Content'
-import MarketingServices from '@/components/MarketingServices'
-import Content3 from '@/components/Content3'
-import Content4 from '@/components/Content4'
-import STPMarketing from '@/components/STPMarketing'
-import DigitalTouchpoint from '@/components/DigitalTouchpoint'
-import BlogSection from '@/components/BlogSection'
-import Review from '@/components/Review'
-import Newletter from '@/components/Newsletter'
 import Footer from '@/components/Footer'
-import LogoPic from '@/components/Img/logo-infinity.png'
-import ServiceGrid from '@/components/ServiceGrid/page'
+import LogoPic from '@/components/Img/Shop-logo.png'
+
 
 export default function HomeClient() {
   const [loading, setLoading] = useState(true)
@@ -40,18 +29,7 @@ export default function HomeClient() {
         <>
           <HeaderNavbar />
           <main>
-            <Hero />
-            <ServiceGrid />
-            <IconMarket />
-            <Content1 />
-            <MarketingServices />
-            <Content3 />
-            <Content4 />
-            <STPMarketing />
-            <DigitalTouchpoint />
-            <BlogSection />
-            <Review />
-            <Newletter />
+            ffsfs
             <Footer />
           </main>
         </>
