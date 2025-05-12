@@ -33,10 +33,10 @@ export default function CartPage() {
               type="number"
               min={1}
               value={item.quantity}
-              onChange={(e) => updateQuantity(item.id, Number(e.target.value))}
+              onChange={(e) => updateQuantity(String(item.id), Number(e.target.value))}
               className="w-16 border px-2 py-1"
             />
-            <button onClick={() => removeFromCart(item.id)} className="text-red-500">ลบ</button>
+            <button onClick={() => removeFromCart(String(item.id))} className="text-red-500">ลบ</button>
           </div>
         </div>
       ))}
