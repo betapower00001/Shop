@@ -1,10 +1,15 @@
-// src/app/api/cart/route.ts
-
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
+// ประกาศ interface สำหรับข้อมูลที่ได้รับจาก request.json()
+interface CartRequestBody {
+  userId: number;
+  productId: number;
+  quantity: number;
+}
+
 export async function POST(request: Request) {
-  const { userId, productId, quantity } = await request.json();
+  const { userId, productId, quantity }: CartRequestBody = await request.json();
 
   // ตรวจสอบว่า productId มีค่าหรือไม่
   if (!productId) {
@@ -27,7 +32,7 @@ export async function POST(request: Request) {
   const cartItem = await prisma.order.create({
     data: {
       userId,
-      productId,
+      productId,  // ตอนนี้ต้องไม่ผิดแล้ว
       quantity,
       totalAmount,
       status: 'pending',

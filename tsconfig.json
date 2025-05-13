@@ -25,6 +25,7 @@
   },
   "include": [
     "next-env.d.ts",
+    "next-auth.d.ts",     // ✅ เพิ่มไฟล์ที่ขยาย type session
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"

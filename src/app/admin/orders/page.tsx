@@ -1,11 +1,14 @@
-// src/app/admin/orders/page.tsx
 import { prisma } from '@/lib/prisma';
 
 export default async function AdminOrdersPage() {
   const orders = await prisma.order.findMany({
     include: {
-      user: true,  // แสดงข้อมูลผู้ใช้งาน
-      product: true,  // แสดงข้อมูลสินค้า
+      user: true, // ข้อมูลผู้ใช้
+      orderItems: {
+        include: {
+          product: true, // โหลดสินค้าภายในแต่ละ order item
+        },
+      },
     },
     orderBy: {
       createdAt: 'desc',
@@ -20,8 +23,7 @@ export default async function AdminOrdersPage() {
           <tr>
             <th className="py-2 px-4 border-b">Order ID</th>
             <th className="py-2 px-4 border-b">User</th>
-            <th className="py-2 px-4 border-b">Product</th>
-            <th className="py-2 px-4 border-b">Quantity</th>
+            <th className="py-2 px-4 border-b">Products</th>
             <th className="py-2 px-4 border-b">Status</th>
             <th className="py-2 px-4 border-b">วันที่สั่งซื้อ</th>
           </tr>
@@ -31,10 +33,19 @@ export default async function AdminOrdersPage() {
             <tr key={order.id}>
               <td className="py-2 px-4 border-b">{order.id}</td>
               <td className="py-2 px-4 border-b">{order.user.name}</td>
-              <td className="py-2 px-4 border-b">{order.product.name}</td>
-              <td className="py-2 px-4 border-b">{order.quantity}</td>
+              <td className="py-2 px-4 border-b">
+                <ul>
+                  {order.orderItems.map((item) => (
+                    <li key={item.id}>
+                      {item.product.name} x {item.quantity}
+                    </li>
+                  ))}
+                </ul>
+              </td>
               <td className="py-2 px-4 border-b">{order.status}</td>
-              <td className="py-2 px-4 border-b">{new Date(order.createdAt).toLocaleDateString()}</td>
+              <td className="py-2 px-4 border-b">
+                {new Date(order.createdAt).toLocaleDateString()}
+              </td>
             </tr>
           ))}
         </tbody>
