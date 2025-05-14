@@ -1,15 +1,17 @@
-// src/app/order/page.tsx
+ //src/app/order/products/page.tsx
+
+import { getServerSession } from 'next-auth/next'; // ใช้การนำเข้าจาก 'next-auth/next'
 import { prisma } from '@/lib/prisma';
-import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/authOptions';
 import { redirect } from 'next/navigation';
+import { Session } from 'next-auth';
 
 export default async function OrderPage() {
-  // ดึงข้อมูล session
+  // ดึงข้อมูล session พร้อมกำหนดประเภทเป็น Session
   const session = await getServerSession(authOptions);
 
-  // หากไม่มี session (ไม่ได้ล็อกอิน) ให้ทำการ redirect ไปที่หน้า login
-  if (!session?.user) {
+  // ตรวจสอบว่า session หรือ session.user เป็น null หรือ undefined
+  if (!session || !session.user?.email) {
     return redirect('/login');
   }
 
@@ -18,7 +20,7 @@ export default async function OrderPage() {
     where: { email: session.user.email },
   });
 
-  // หากไม่พบผู้ใช้ในฐานข้อมูล
+  // หากไม่พบผู้ใช้
   if (!user) {
     return <div>ไม่พบผู้ใช้งาน</div>;
   }
@@ -29,16 +31,16 @@ export default async function OrderPage() {
     include: {
       orderItems: {
         include: {
-          product: true, // ดึงข้อมูลสินค้าภายในคำสั่งซื้อ
+          product: true,
         },
       },
     },
     orderBy: {
-      createdAt: 'desc', // เรียงคำสั่งซื้อจากใหม่ไปเก่า
+      createdAt: 'desc',
     },
   });
 
-  // แสดงผลหน้าเว็บ
+  // แสดงผลลัพธ์
   return (
     <div className="max-w-4xl mx-auto mt-8 px-4">
       <h1 className="text-2xl font-bold mb-6">ประวัติคำสั่งซื้อของคุณ</h1>

@@ -1,4 +1,5 @@
 'use client'
+// src/app/admin/products/create.tsx
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'

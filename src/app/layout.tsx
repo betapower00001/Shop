@@ -1,4 +1,5 @@
 // src/app/layout.tsx
+import { SessionProvider } from 'next-auth/react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './globals.css';
@@ -22,7 +23,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="th">
       <head />
       <body className={anuphan.className}>
-        <main>{children}</main>
+        <SessionProvider>
+          <main>{children}</main>
+        </SessionProvider>
       </body>
     </html>
   );

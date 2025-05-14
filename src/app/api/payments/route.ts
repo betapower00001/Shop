@@ -1,22 +1,30 @@
-// src/app/api/payments/route.ts
-
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
 export async function POST(request: Request) {
   const { userId, orderId, paymentMethod } = await request.json();
 
-  // จัดการการชำระเงิน
+  const order = await prisma.order.findUnique({
+    where: { id: orderId },
+  });
+
+  if (!order) {
+    return NextResponse.json({ error: 'Order not found' }, { status: 404 });
+  }
+
+  const totalAmount = order.totalAmount;
+
   const payment = await prisma.payment.create({
     data: {
-      userId,
+      userId,                // ✅ ใช้ได้แล้ว
       orderId,
-      paymentMethod,
-      status: 'completed', // หรือ 'pending', 'failed' ขึ้นอยู่กับการชำระเงิน
+      paymentMethod,         // ✅ ใช้ได้แล้ว
+      amount: totalAmount,   // ✅ ต้องมี
+      method: paymentMethod, // ✅ ใช้ซ้ำสำหรับ field 'method'
+      status: 'completed',
     },
   });
 
-  // อัปเดตสถานะการสั่งซื้อ
   const updatedOrder = await prisma.order.update({
     where: { id: orderId },
     data: { status: 'paid' },

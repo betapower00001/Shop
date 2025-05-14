@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -8,28 +7,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  name     String?
+  password String
+  orders   Order[]
+  createdAt DateTime @default(now())
+}
+
 model Product {
   id          Int      @id @default(autoincrement())
   name        String
   description String?
   price       Float
-  imageUrl    String
-  stock       Int      @default(0)
-  createdAt   DateTime @default(now())
+  stock       Int       @default(0)      // ✅ เพิ่มฟิลด์ stock
+  imageUrl    String?                    // ✅ เพิ่มฟิลด์ imageUrl (optional)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
-  orderItems OrderItem[] // กลับ relation จาก OrderItem
-  orders     Order[] // ✅ เพิ่ม relation กลับจาก Order
-}
-
-model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
-
-  orders   Order[] // เดิม
-  payments Payment[] // เดิม
+  orderItems OrderItem[] // ✅ ความสัมพันธ์กับรายการสินค้าทั้งหมด
 }
 
 model Order {
@@ -40,10 +37,8 @@ model Order {
   createdAt   DateTime @default(now())
 
   user       User        @relation(fields: [userId], references: [id])
-  orderItems OrderItem[] // ✅ ใช้เก็บสินค้าหลายรายการ
-  payment    Payment? // ✅ optional เพราะอาจยังไม่จ่าย
-  Product    Product?    @relation(fields: [productId], references: [id])
-  productId  Int?
+  orderItems OrderItem[] // ✅ รายการสินค้าในคำสั่งซื้อนี้
+  payment    Payment?
 }
 
 model OrderItem {
@@ -58,13 +53,14 @@ model OrderItem {
 }
 
 model Payment {
-  id            Int      @id @default(autoincrement())
-  userId        Int
-  orderId       Int      @unique // ✅ เพิ่ม @unique ตรงนี้
-  paymentMethod String
-  status        String
-  createdAt     DateTime @default(now())
+  id             Int      @id @default(autoincrement())
+  orderId        Int      @unique
+  amount         Float
+  method         String
+  status         String
+  paidAt         DateTime @default(now())
+  userId         Int      // ✅ เพิ่มมาแล้ว
+  paymentMethod  String   // ✅ เพิ่มมาแล้ว
 
-  user  User  @relation(fields: [userId], references: [id])
   order Order @relation(fields: [orderId], references: [id])
 }

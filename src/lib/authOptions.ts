@@ -1,57 +1,47 @@
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
+// src/lib/authOptions.ts
+import { AuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { prisma } from './prisma'; // เชื่อมต่อกับ Prisma
-import NextAuth from 'next-auth'; // นำเข้า NextAuth สำหรับการตั้งค่า
-import { JWT } from 'next-auth/jwt'; // ใช้ประเภท JWT ถ้าจำเป็น
+import { prisma } from './prisma'; // ต้อง import prisma เพื่อให้ฟังก์ชัน authorize ใช้ได้
 
-export const authOptions = {
-  adapter: PrismaAdapter(prisma), // ใช้ PrismaAdapter สำหรับ NextAuth
+export const authOptions: AuthOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        email: { label: 'Email', type: 'text' },
-        password: { label: 'Password', type: 'password' },
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        // ตรวจสอบว่า credentials มีค่า email และ password หรือไม่
-        if (!credentials?.email || !credentials.password) return null;
-
-        // ค้นหาผู้ใช้ในฐานข้อมูล
+        // ตรวจสอบผู้ใช้ที่นี่ (สมมุติใช้ Prisma)
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
+          where: { email: credentials?.email },
         });
-
-        // เปรียบเทียบรหัสผ่านที่ได้รับกับฐานข้อมูล (ในกรณีนี้เป็นรหัสผ่านที่ไม่ได้เข้ารหัส)
-        if (user && user.password === credentials.password) {
-          return {
-            id: user.id.toString(), // แปลง id เป็น string
-            name: user.name,
-            email: user.email,
-          };
+        if (user && user.password === credentials?.password) {
+          return user;
         }
-
-        return null; // ถ้าไม่พบผู้ใช้หรือรหัสผ่านไม่ถูกต้อง
-      },
-    }),
+        return null;
+      }
+    })
   ],
+  pages: {
+    signIn: '/login',
+  },
   session: {
-    strategy: 'jwt', // ใช้ JWT สำหรับการจัดการ session
+    strategy: 'jwt',
   },
   callbacks: {
-    async jwt({ token, user }: { token: JWT; user?: any }) {
-      if (user) {
-        token.id = user.id; // เพิ่ม id ลงใน token
-        token.email = user.email; // เพิ่ม email ลงใน token
-      }
-      return token;
-    },
-    async session({ session, token }: { session: any; token: JWT }) {
-      if (session.user) {
-        session.user.id = token.id as string; // กำหนด id ของผู้ใช้ใน session
-        session.user.email = token.email as string; // กำหนด email ของผู้ใช้ใน session
+    // แก้ตรงนี้ให้แน่ใจว่า session.user มี email และไม่เกิด undefined
+    async session({ session, token }) {
+      session.user = session.user || {}; // กันกรณี session.user เป็น undefined
+      if (token?.email) {
+        session.user.email = token.email as string; // cast email เป็น string เพื่อไม่ให้เกิด error
       }
       return session;
+    },
+    async jwt({ token, user }) {
+      // ถ้ามี user ที่ล็อกอิน ให้เอา email ใส่ใน token
+      if (user) token.email = user.email;
+      return token;
     },
   },
 };
