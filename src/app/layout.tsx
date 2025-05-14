@@ -1,11 +1,10 @@
 // src/app/layout.tsx
-import { SessionProvider } from 'next-auth/react';
+import './globals.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './globals.css';
-import React from 'react';
 import { Anuphan } from 'next/font/google';
 import type { Metadata } from 'next';
+import { Providers } from '@/components/Providers';
 
 const anuphan = Anuphan({
   subsets: ['thai'],
@@ -23,9 +22,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="th">
       <head />
       <body className={anuphan.className}>
-        <SessionProvider>
+        <Providers>
           <main>{children}</main>
-        </SessionProvider>
+        </Providers>
       </body>
     </html>
   );
