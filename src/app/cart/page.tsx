@@ -1,49 +1,45 @@
-'use client'
+ //src/app/cart/page.tsx
 
-import { useCart } from '@/hooks/useCart'
-import Image from 'next/image'
-import Link from 'next/link'
+"use client";
+
+import React, { useEffect } from "react";
+import { useCartStore } from "@/store/cartStore";
 
 export default function CartPage() {
-  const { items, totalPrice, updateQuantity, removeFromCart } = useCart()
+  const { items, totalItems, totalPrice, loadCart, removeItem, updateQuantity } = useCartStore();
 
-  if (items.length === 0) {
-    return (
-      <div className="p-4 text-center">
-        <p>ตะกร้าสินค้าของคุณว่างเปล่า</p>
-        <Link href="/product" className="text-blue-500 underline">ไปเลือกซื้อสินค้า</Link>
-      </div>
-    )
-  }
+  useEffect(() => {
+    loadCart(1); // โหลดตะกร้าของ userId=1
+  }, [loadCart]);
+
+  if (items.length === 0)
+    return <div>ตะกร้าว่างเปล่า</div>;
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl mb-4">ตะกร้าสินค้า</h1>
-      {items.map((item) => (
-        <div key={item.id} className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-4">
-            <Image src={item.image || '/default-product.jpg'} alt={item.name} width={64} height={64} />
+    <div>
+      <h1>ตะกร้าสินค้า</h1>
+      <p>รวม {totalItems} ชิ้น ราคา {totalPrice.toFixed(2)} บาท</p>
+      <ul>
+        {items.map((item) => (
+          <li key={item.id} style={{ marginBottom: "1rem" }}>
+            <div>{item.name} - ราคา {item.price} บาท</div>
             <div>
-              <h2>{item.name}</h2>
-              <p className="text-sm text-gray-600">{item.price} บาท</p>
+              จำนวน: 
+              <input
+                type="number"
+                value={item.quantity}
+                min={1}
+                onChange={(e) => {
+                  const qty = parseInt(e.target.value);
+                  if (qty > 0) updateQuantity(item.id, qty);
+                }}
+                style={{ width: "60px", marginLeft: "0.5rem" }}
+              />
             </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <input
-              type="number"
-              min={1}
-              value={item.quantity}
-              onChange={(e) => updateQuantity(String(item.id), Number(e.target.value))}
-              className="w-16 border px-2 py-1"
-            />
-            <button onClick={() => removeFromCart(String(item.id))} className="text-red-500">ลบ</button>
-          </div>
-        </div>
-      ))}
-      <div className="mt-6 text-right">
-        <p className="text-lg font-semibold">รวมทั้งสิ้น: {totalPrice} บาท</p>
-        <Link href="/checkout" className="inline-block mt-4 bg-blue-600 text-white px-4 py-2 rounded">ไปชำระเงิน</Link>
-      </div>
+            <button onClick={() => removeItem(item.id)}>ลบสินค้า</button>
+          </li>
+        ))}
+      </ul>
     </div>
-  )
+  );
 }

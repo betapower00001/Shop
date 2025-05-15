@@ -8,6 +8,11 @@ const nextConfig = {
       'your-project-id.supabase.co',
       'localhost',
       'cdn.example.com',
+      'encrypted-tbn0.gstatic.com', // เพิ่มโดเมนนี้เพราะ error ของ next/image
+      'res.cloudinary.com',          // ถ้าใช้ Cloudinary 
+      'www.smartraum.de',
+      'www.istore.co.za',
+      // เพิ่มโดเมนอื่น ๆ ที่คุณจะใช้เก็บรูป
     ],
   },
 };

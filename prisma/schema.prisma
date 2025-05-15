@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+   output   = "./node_modules/@prisma/client"
 }
 
 datasource db {
@@ -8,12 +9,14 @@ datasource db {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  email    String  @unique
-  name     String?
-  password String
-  orders   Order[]
-  createdAt DateTime @default(now())
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
+  name      String?
+  password  String
+  orders    Order[]
+  cartItems CartItem[] // เพิ่มบรรทัดนี้
+  payments  Payment[] // เพิ่มบรรทัดนี้ (ถ้าอยากเชื่อมกับ Payment ด้วย)
+  createdAt DateTime   @default(now())
 }
 
 model Product {
@@ -21,12 +24,13 @@ model Product {
   name        String
   description String?
   price       Float
-  stock       Int       @default(0)      // ✅ เพิ่มฟิลด์ stock
-  imageUrl    String?                    // ✅ เพิ่มฟิลด์ imageUrl (optional)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  stock       Int      @default(0) // ✅ เพิ่มฟิลด์ stock
+  imageUrl    String? // ✅ เพิ่มฟิลด์ imageUrl (optional)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   orderItems OrderItem[] // ✅ ความสัมพันธ์กับรายการสินค้าทั้งหมด
+  cartItems  CartItem[] // เพิ่มบรรทัดนี้
 }
 
 model Order {
@@ -53,14 +57,27 @@ model OrderItem {
 }
 
 model Payment {
-  id             Int      @id @default(autoincrement())
-  orderId        Int      @unique
-  amount         Float
-  method         String
-  status         String
-  paidAt         DateTime @default(now())
-  userId         Int      // ✅ เพิ่มมาแล้ว
-  paymentMethod  String   // ✅ เพิ่มมาแล้ว
+  id            Int      @id @default(autoincrement())
+  orderId       Int      @unique
+  amount        Float
+  status        String
+  paidAt        DateTime @default(now())
+  userId        Int
+  paymentMethod String // ควรใช้ชื่อเดียว (ลบ 'method' ถ้ามี)
 
   order Order @relation(fields: [orderId], references: [id])
+  user  User  @relation(fields: [userId], references: [id]) // เพิ่ม relation กับ User ด้วย ถ้าต้องการ
+}
+
+model CartItem {
+  id        Int     @id @default(autoincrement())
+  userId    Int
+  productId Int
+  quantity  Int
+
+  product   Product @relation(fields: [productId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
+
+  @@unique([userId, productId])
+  @@index([userId])
 }

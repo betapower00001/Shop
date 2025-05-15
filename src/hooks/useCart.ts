@@ -1,81 +1,105 @@
+// src/hooks/useCart.ts
+
+'use client'
+
 import { useState, useEffect } from "react";
 import { Product } from "@prisma/client";
-import { CartItem } from "@/types/cart"; // หรือ './types/cart' แล้วแต่โครงสร้าง
+import { CartItem } from "@/types/cart";
 
 export function useCart() {
   const [items, setItems] = useState<CartItem[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
 
-  // โหลดข้อมูลตะกร้าจากฐานข้อมูล
+  // โหลดข้อมูลตะกร้า
   useEffect(() => {
     async function loadCart() {
-      const response = await fetch("/api/cart");
-      const data = await response.json();
-      
-      // ตรวจสอบว่า data ตรงตาม CartItem หรือไม่
-      if (Array.isArray(data)) {
-        setItems(data);
-        setTotalPrice(
-          data.reduce(
+      try {
+        const response = await fetch("/api/cart");
+        const data = await response.json();
+
+        if (Array.isArray(data)) {
+          setItems(data);
+          const total = data.reduce(
             (sum: number, item: CartItem) => sum + item.quantity * item.price,
             0
-          )
-        );
+          );
+          setTotalPrice(total);
+        }
+      } catch (error) {
+        console.error("เกิดข้อผิดพลาดขณะโหลดตะกร้า:", error);
       }
     }
 
     loadCart();
   }, []);
 
-  // เพิ่มสินค้าลงตะกร้า
+  // เพิ่มสินค้า
   const addToCart = async (product: Product) => {
-    const response = await fetch("/api/cart", {
-      method: "POST",
-      body: JSON.stringify({
-        userId: 1, // ตัวอย่าง User ID ที่ได้จากระบบ
-        productId: product.id,
-        quantity: 1,
-      }),
-      headers: { "Content-Type": "application/json" },
-    });
-    const newItem = await response.json();
-    if (newItem && typeof newItem.id === "string") { // ตรวจสอบว่า newItem ตรงกับ CartItem
-      setItems((prevItems) => [...prevItems, newItem]);
+    try {
+      const response = await fetch("/api/cart", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: 1,
+          productId: product.id,
+          quantity: 1,
+        }),
+      });
+      await response.json();
+
+      await reloadCart();
+    } catch (error) {
+      console.error("❌ เพิ่มสินค้าล้มเหลว:", error);
     }
   };
 
-  // อัปเดตจำนวนสินค้าในตะกร้า
+  // อัปเดตจำนวนสินค้า
   const updateQuantity = async (id: string, quantity: number) => {
-    const response = await fetch("/api/cart", {
-      method: "PUT",
-      body: JSON.stringify({ cartItemId: id, quantity }),
-      headers: { "Content-Type": "application/json" },
-    });
-    const updatedItem = await response.json();
-    setItems((prevItems) =>
-      prevItems.map((item) => (item.id === updatedItem.id ? updatedItem : item))
-    );
+    try {
+      const response = await fetch("/api/cart", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ cartItemId: id, quantity }),
+      });
+      await response.json();
+
+      await reloadCart();
+    } catch (error) {
+      console.error("❌ อัปเดตจำนวนสินค้าล้มเหลว:", error);
+    }
   };
 
-  // ลบสินค้าจากตะกร้า
+  // ลบสินค้า
   const removeFromCart = async (id: string) => {
-    const response = await fetch("/api/cart", {
-      method: "DELETE",
-      body: JSON.stringify({ cartItemId: id }),
-      headers: { "Content-Type": "application/json" },
-    });
-    const deletedItem = await response.json();
-    setItems((prevItems) =>
-      prevItems.filter((item) => item.id !== deletedItem.id)
-    );
+    try {
+      const response = await fetch("/api/cart", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ cartItemId: id }),
+      });
+      await response.json();
+
+      await reloadCart();
+    } catch (error) {
+      console.error("❌ ลบสินค้าล้มเหลว:", error);
+    }
   };
 
-  // เคลียร์ตะกร้า
-  const clearCart = async () => {
-    setItems([]);
-    setTotalPrice(0);
-    await fetch("/api/cart/clear", { method: "POST" });
+  // รีโหลดตะกร้า
+  const reloadCart = async () => {
+    try {
+      const response = await fetch("/api/cart");
+      const data = await response.json();
+      setItems(data);
+      const total = data.reduce(
+        (sum: number, item: CartItem) => sum + item.quantity * item.price,
+        0
+      );
+      setTotalPrice(total);
+    } catch (error) {
+      console.error("❌ โหลดตะกร้าล้มเหลว:", error);
+    }
   };
 
-  return { items, totalPrice, addToCart, updateQuantity, removeFromCart, clearCart };
+  return { items, totalPrice, addToCart, updateQuantity, removeFromCart };
 }
