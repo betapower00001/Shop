@@ -1,29 +1,30 @@
 // prisma/seed.ts
-import { prisma } from '../src/lib/prisma';
-import bcrypt from 'bcryptjs';
+import { prisma } from "../src/lib/prisma";
+import bcrypt from "bcryptjs";
 
 async function main() {
-  const password = await bcrypt.hash('123456', 10); // เข้ารหัสรหัสผ่าน
+  const password = await bcrypt.hash("123456", 10); // เข้ารหัสรหัสผ่าน
 
-  await prisma.user.upsert({
-    where: { email: 'admin@example.com' },
-    update: {},
-    create: {
-      email: 'admin@example.com',
-      name: 'Admin',
-      password, // ต้องเป็นรหัสที่เข้ารหัสแล้ว
-    },
-  });
+  if (process.env.NODE_ENV !== "production") {
+    await prisma.user.upsert({
+      where: { email: "admin@example.com" },
+      update: {},
+      create: {
+        email: "admin@example.com",
+        name: "Admin",
+        password,
+      },
+    });
+  }
 
-  console.log('✅ Seed complete! User: admin@example.com / 123456');
+  console.log("✅ Seed complete! User: admin@example.com / 123456");
 }
 
 main()
   .catch((e) => {
-    console.error('❌ Seed failed:', e);
+    console.error("❌ Seed failed:", e);
     process.exit(1);
   })
   .finally(async () => {
     await prisma.$disconnect();
   });
-
