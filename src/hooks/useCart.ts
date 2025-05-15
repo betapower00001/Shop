@@ -10,17 +10,19 @@ export function useCart() {
   const [items, setItems] = useState<CartItem[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
 
-  // โหลดข้อมูลตะกร้า
+  // ✅ คำนวณ totalItems อย่างปลอดภัย
+  const totalItems = items?.reduce((sum, item) => sum + (item.quantity || 0), 0);
+
   useEffect(() => {
     async function loadCart() {
       try {
         const response = await fetch("/api/cart");
-        const data = await response.json();
+        const data: CartItem[] = await response.json();
 
         if (Array.isArray(data)) {
           setItems(data);
           const total = data.reduce(
-            (sum: number, item: CartItem) => sum + item.quantity * item.price,
+            (sum, item) => sum + item.quantity * item.price,
             0
           );
           setTotalPrice(total);
@@ -33,7 +35,6 @@ export function useCart() {
     loadCart();
   }, []);
 
-  // เพิ่มสินค้า
   const addToCart = async (product: Product) => {
     try {
       const response = await fetch("/api/cart", {
@@ -46,14 +47,12 @@ export function useCart() {
         }),
       });
       await response.json();
-
       await reloadCart();
     } catch (error) {
       console.error("❌ เพิ่มสินค้าล้มเหลว:", error);
     }
   };
 
-  // อัปเดตจำนวนสินค้า
   const updateQuantity = async (id: string, quantity: number) => {
     try {
       const response = await fetch("/api/cart", {
@@ -62,14 +61,12 @@ export function useCart() {
         body: JSON.stringify({ cartItemId: id, quantity }),
       });
       await response.json();
-
       await reloadCart();
     } catch (error) {
       console.error("❌ อัปเดตจำนวนสินค้าล้มเหลว:", error);
     }
   };
 
-  // ลบสินค้า
   const removeFromCart = async (id: string) => {
     try {
       const response = await fetch("/api/cart", {
@@ -78,21 +75,19 @@ export function useCart() {
         body: JSON.stringify({ cartItemId: id }),
       });
       await response.json();
-
       await reloadCart();
     } catch (error) {
       console.error("❌ ลบสินค้าล้มเหลว:", error);
     }
   };
 
-  // รีโหลดตะกร้า
   const reloadCart = async () => {
     try {
       const response = await fetch("/api/cart");
-      const data = await response.json();
+      const data: CartItem[] = await response.json();
       setItems(data);
       const total = data.reduce(
-        (sum: number, item: CartItem) => sum + item.quantity * item.price,
+        (sum, item) => sum + item.quantity * item.price,
         0
       );
       setTotalPrice(total);
@@ -101,5 +96,6 @@ export function useCart() {
     }
   };
 
-  return { items, totalPrice, addToCart, updateQuantity, removeFromCart };
+  // ✅ return totalItems ด้วย
+  return { items, totalItems, totalPrice, addToCart, updateQuantity, removeFromCart };
 }

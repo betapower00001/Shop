@@ -1,3 +1,5 @@
+// src/components/CartIcon.tsx
+
 'use client'
 
 import { ShoppingCart } from 'lucide-react'

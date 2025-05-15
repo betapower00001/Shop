@@ -1,20 +1,18 @@
-// src/components/Navbar.tsx
 'use client';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import { useCartStore } from '@/store/cartStore';
+import { useSession, signOut } from 'next-auth/react';
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { data: session } = useSession(); // ตรวจสอบ session
 
-  // ดึงจำนวนสินค้าทั้งหมดในตะกร้าจาก store
   const totalItems = useCartStore((state) => state.totalItems);
-  // ฟังก์ชันโหลดตะกร้าจาก backend
   const loadCart = useCartStore((state) => state.loadCart);
 
-  // โหลดตะกร้าทุกครั้งที่ Navbar โหลดครั้งแรก
   useEffect(() => {
     loadCart();
   }, [loadCart]);
@@ -59,12 +57,11 @@ export default function Navbar() {
               </li>
             ))}
 
-            {/* ไอคอนตะกร้าพร้อม badge */}
+            {/* ตะกร้าสินค้า */}
             <li className="nav-item ms-3">
               <Link href="/cart" className="nav-link position-relative">
                 <i className="bi bi-cart3 fs-5"></i>
                 <span className="visually-hidden">Cart</span>
-
                 {totalItems > 0 && (
                   <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                     {totalItems}
@@ -72,6 +69,34 @@ export default function Navbar() {
                 )}
               </Link>
             </li>
+
+            {/* ถ้ายังไม่ login */}
+            {!session && (
+              <li className="nav-item ms-3">
+                <Link href="/login" className="btn btn-outline-primary btn-sm">
+                  เข้าสู่ระบบ
+                </Link>
+              </li>
+            )}
+
+            {/* ถ้า login แล้ว */}
+            {session && (
+              <>
+                <li className="nav-item ms-3">
+                  <span className="nav-link text-success fw-semibold">
+                    สวัสดี, {session.user?.name ?? session.user?.email}
+                  </span>
+                </li>
+                <li className="nav-item ms-2">
+                  <button
+                    className="btn btn-outline-danger btn-sm"
+                    onClick={() => signOut({ callbackUrl: '/login' })}
+                  >
+                    ออกจากระบบ
+                  </button>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>

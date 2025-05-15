@@ -1,26 +1,29 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+// prisma/seed.ts
+import { prisma } from '../src/lib/prisma';
+import bcrypt from 'bcryptjs';
 
 async function main() {
+  const password = await bcrypt.hash('123456', 10); // เข้ารหัสรหัสผ่าน
+
   await prisma.user.upsert({
-    where: { email: "test@example.com" },
+    where: { email: 'admin@example.com' },
     update: {},
     create: {
-      email: "test@example.com",
-      name: "Test User",
-      password: "123456789", // ต้องใส่ password ด้วย
+      email: 'admin@example.com',
+      name: 'Admin',
+      password, // ต้องเป็นรหัสที่เข้ารหัสแล้ว
     },
   });
 
-  console.log("✅ Seed complete!");
+  console.log('✅ Seed complete! User: admin@example.com / 123456');
 }
 
 main()
   .catch((e) => {
-    console.error(e);
+    console.error('❌ Seed failed:', e);
     process.exit(1);
   })
   .finally(async () => {
     await prisma.$disconnect();
   });
+

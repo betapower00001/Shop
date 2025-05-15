@@ -1,21 +1,23 @@
 // src/app/page.tsx
-import { prisma } from '@/lib/prisma';
-import ProductCarousel from '@/components/ProductCarousel';
+import { prisma } from "@/lib/prisma";
+import ProductCarousel from "@/components/ProductCarousel";
 import Menubar from "@/components/Navbar/page";
 
 export default async function HomePage() {
   const products = await prisma.product.findMany({
     take: 6,
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
   });
 
   return (
     <>
       <Menubar />
       <main className="min-h-screen bg-light">
-
         {/* Banner */}
-        <div className="relative w-full h-[300px] md:h-[400px] bg-cover bg-center" style={{ backgroundImage: "url('/banner.jpg')" }}>
+        <div
+          className="relative w-full h-[300px] md:h-[400px] bg-cover bg-center"
+          style={{ backgroundImage: "url('/banner.jpg')" }}
+        >
           <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
             <h1 className="text-4xl md:text-5xl font-bold text-white text-center">
               ยินดีต้อนรับสู่ร้านของเรา
@@ -28,10 +30,14 @@ export default async function HomePage() {
 
           {/* Main content */}
           <section className="container mx-auto px-4 py-8">
-            <h2 className="text-2xl font-semibold mb-4 text-gray-800 text-center">สินค้าแนะนำ</h2>
+            <h2 className="text-2xl font-semibold mb-4 text-gray-800 text-center">
+              สินค้าแนะนำ
+            </h2>
 
             {products.length === 0 ? (
-              <p className="text-center text-gray-500 text-lg">ยังไม่มีสินค้า</p>
+              <p className="text-center text-gray-500 text-lg">
+                ยังไม่มีสินค้า
+              </p>
             ) : (
               <ProductCarousel products={products} />
             )}
