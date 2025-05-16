@@ -18,7 +18,7 @@ export function useCart() {
       try {
         const response = await fetch("/api/cart");
         const data: CartItem[] = await response.json();
-
+        console.log("📦 โหลดตะกร้า:", data);
         if (Array.isArray(data)) {
           setItems(data);
           const total = data.reduce(
@@ -95,7 +95,18 @@ export function useCart() {
       console.error("❌ โหลดตะกร้าล้มเหลว:", error);
     }
   };
+  const clearCart = async () => {
+    try {
+      const response = await fetch("/api/cart/clear", {
+        method: "POST",
+      });
+      await response.json();
+      await reloadCart(); // โหลดตะกร้าใหม่ให้ว่าง
+    } catch (error) {
+      console.error("❌ ล้างตะกร้าล้มเหลว:", error);
+    }
+  };
 
   // ✅ return totalItems ด้วย
-  return { items, totalItems, totalPrice, addToCart, updateQuantity, removeFromCart };
+  return { items, totalItems, totalPrice, addToCart, updateQuantity, removeFromCart, clearCart, };
 }

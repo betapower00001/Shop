@@ -1,7 +1,6 @@
 // src/app/page.tsx
 import { prisma } from "@/lib/prisma";
 import ProductCarousel from "@/components/ProductCarousel";
-import Menubar from "@/components/Navbar/page";
 
 export default async function HomePage() {
   const products = await prisma.product.findMany({
@@ -11,7 +10,6 @@ export default async function HomePage() {
 
   return (
     <>
-      <Menubar />
       <main className="min-h-screen bg-light">
         {/* Banner */}
         <div

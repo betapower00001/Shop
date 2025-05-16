@@ -20,13 +20,12 @@ export async function POST(request: Request) {
       orderItems: {
         // ใช้ชื่อ field ให้ตรงกับ schema
         create: cartItems.map((item: any) => ({
-          productId: item.id,
+          productId: item.productId,
           quantity: item.quantity,
-          totalAmount: item.price * item.quantity,
+          totalAmount: item.quantity * item.price,
         })),
       },
     },
   });
-
   return NextResponse.json({ order });
 }

@@ -20,7 +20,7 @@ export async function POST(request: Request) {
       orderId,
       paymentMethod,         // ✅ ใช้ได้แล้ว
       amount: totalAmount,   // ✅ ต้องมี
-      method: paymentMethod, // ✅ ใช้ซ้ำสำหรับ field 'method'
+       // ✅ ใช้ซ้ำสำหรับ field 'method'
       status: 'completed',
     },
   });

@@ -6,6 +6,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Anuphan } from "next/font/google";
 import type { Metadata } from "next";
 import { Providers } from "@/components/Providers";
+import Menubar from "@/components/Navbar/page";
+
 
 const anuphan = Anuphan({
   subsets: ["thai"],
@@ -28,7 +30,8 @@ export default function RootLayout({
       <head /> 
       <body className={anuphan.className}>
         <Providers>
-          <main>{children}</main>
+          <Menubar />
+          <main>{children}</main>              
         </Providers>
       </body>
     </html>

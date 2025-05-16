@@ -1,3 +1,5 @@
+//src/app/checkout/page.tsx
+
 'use client'
 
 import { useCart } from '@/hooks/useCart'
@@ -12,12 +14,18 @@ export default function CheckoutPage() {
   const handleCheckout = async () => {
     try {
       const userId = 1 // 👈 ตัวอย่าง (ในระบบจริงควรดึงจาก session)
-      
+
       // 1. สร้างคำสั่งซื้อ
       const orderRes = await fetch('/api/orders', {
         method: 'POST',
         body: JSON.stringify({ userId, cartItems: items }),
       })
+      if (!orderRes.ok) {
+        const errorText = await orderRes.text() // ลองดึงข้อความ error
+        console.error('Order creation failed:', errorText)
+        alert('ไม่สามารถสร้างคำสั่งซื้อได้')
+        return
+      }
       const orderData = await orderRes.json()
 
       // 2. ชำระเงิน
@@ -40,6 +48,7 @@ export default function CheckoutPage() {
       console.error(error)
       alert('เกิดข้อผิดพลาดขณะทำรายการ')
     }
+    console.log("🛒 ส่งข้อมูลสั่งซื้อ:", items);
   }
 
   return (
@@ -66,5 +75,6 @@ export default function CheckoutPage() {
         ยืนยันการสั่งซื้อ
       </button>
     </div>
+
   )
 }
