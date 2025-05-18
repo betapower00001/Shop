@@ -143,15 +143,19 @@ export default function CheckoutPage() {
       <ul className="mb-4">
         {items.length === 0 && <p>ไม่มีสินค้าในตะกร้า</p>}
         {items.map((item) => (
-          <li key={item.id} className="flex justify-between py-1">
-            <span>
-              {item.name} x {item.quantity}
-            </span>
-            <span>{(item.price * item.quantity).toFixed(2)} บาท</span>
+          <li key={item.id} className="py-1">
+            <div className="flex justify-between">
+              <span>
+                {item.name} (x{item.quantity})
+              </span>
+              <span>ราคาชิ้นละ {item.price.toFixed(2)} บาท</span>
+            </div>
+            <div className="text-right text-sm text-gray-500">
+              รวม {(item.price * item.quantity).toFixed(2)} บาท
+            </div>
           </li>
         ))}
       </ul>
-
       <div className="font-bold mb-4">ยอดรวม: {totalPrice.toFixed(2)} บาท</div>
 
       <div className="mb-4 space-y-2">
