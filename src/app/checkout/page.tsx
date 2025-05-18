@@ -8,7 +8,7 @@ import { useCartStore } from "@/store/cartStore";
 import { useSession } from "next-auth/react";
 
 export default function CheckoutPage() {
-  const { items, totalPrice } = useCartStore();
+  const { items, totalPrice, setItems } = useCartStore();
   const router = useRouter();
   const { data: session, status } = useSession();
 
@@ -22,7 +22,27 @@ export default function CheckoutPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // ดึงข้อมูลผู้ใช้เมื่อมี userId
+  useEffect(() => {
+    const validateCartItems = async () => {
+      const validItems = [];
+
+      for (const item of items) {
+        const res = await fetch(`/api/products/${item.productId}`);
+        if (res.ok) {
+          validItems.push(item);
+        } else {
+          console.warn(`สินค้า id ${item.productId} ไม่มีในระบบ`);
+        }
+      }
+
+      if (validItems.length !== items.length) {
+        setItems(validItems);
+      }
+    };
+
+    validateCartItems();
+  }, [items, setItems]);
+
   useEffect(() => {
     if (!userId) return;
 
@@ -76,7 +96,7 @@ export default function CheckoutPage() {
           totalAmount: totalPrice,
           paymentMethod,
           orderItems: items.map((item) => ({
-            productId: item.id,
+            productId: item.productId, // แก้ตรงนี้
             quantity: item.quantity,
             totalAmount: item.price * item.quantity,
           })),

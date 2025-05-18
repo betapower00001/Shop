@@ -15,6 +15,12 @@ export async function POST(req: NextRequest) {
       orderItems,
     } = await req.json()
 
+    const userIdInt = parseInt(userId, 10);
+
+    if (isNaN(userIdInt)) {
+      return NextResponse.json({ error: 'userId ต้องเป็นตัวเลข' }, { status: 400 })
+    }
+
     if (!userId || !shippingName || !shippingAddress || !shippingPhone || !paymentMethod) {
       return NextResponse.json({ error: 'ข้อมูลไม่ครบถ้วน' }, { status: 400 })
     }
@@ -23,10 +29,26 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'ไม่มีสินค้าในคำสั่งซื้อ' }, { status: 400 })
     }
 
-    // สร้าง Order (ไม่ต้องใส่ paymentMethod)
+    // ตรวจสอบ productId ทั้งหมดใน orderItems ว่ามีอยู่จริงใน DB
+    const productIds = orderItems.map((item: any) => item.productId);
+    const existingProducts = await prisma.product.findMany({
+      where: { id: { in: productIds } },
+      select: { id: true },
+    });
+    const existingProductIds = existingProducts.map(p => p.id);
+
+    const invalidProductId = productIds.find((id: number) => !existingProductIds.includes(id));
+    if (invalidProductId) {
+      return NextResponse.json(
+        { error: `สินค้า id ${invalidProductId} ไม่มีในระบบ` },
+        { status: 400 }
+      );
+    }
+
+    // สร้าง Order
     const newOrder = await prisma.order.create({
       data: {
-        userId,
+        userId: userIdInt,
         shippingName,
         shippingAddress,
         shippingPhone,
@@ -49,7 +71,7 @@ export async function POST(req: NextRequest) {
         amount: totalAmount,
         status: 'pending',
         paymentMethod,
-         userId: userId,
+        userId: userIdInt,
       },
     })
 

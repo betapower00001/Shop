@@ -21,6 +21,7 @@ type CartState = {
   removeItem: (cartItemId: number) => Promise<void>;
   updateQuantity: (cartItemId: number, quantity: number) => Promise<void>;
   clearCart: () => void;
+  setItems: (items: CartItem[]) => void; // ✅ เพิ่มตรงนี้
 };
 
 export const useCartStore = create<CartState>((set, get) => ({
@@ -85,5 +86,13 @@ export const useCartStore = create<CartState>((set, get) => ({
 
   clearCart: () => {
     set({ items: [], totalItems: 0, totalPrice: 0 });
+  },
+
+  setItems: (items) => { // ✅ เพิ่มฟังก์ชันนี้
+    set({
+      items,
+      totalItems: items.reduce((sum, item) => sum + item.quantity, 0),
+      totalPrice: items.reduce((sum, item) => sum + item.price * item.quantity, 0),
+    });
   },
 }));
