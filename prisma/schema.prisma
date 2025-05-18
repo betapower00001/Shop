@@ -42,6 +42,8 @@ model Order {
   createdAt   DateTime @default(now())
   shippingAddress String? // เพิ่มที่อยู่จัดส่งในคำสั่งซื้อ
   trackingNumber  String? // หมายเลขพัสดุ
+  shippingName    String?   // เพิ่มบรรทัดนี้
+  shippingPhone   String?   // เพิ่มบรรทัดนี้
 
   user       User        @relation(fields: [userId], references: [id])
   orderItems OrderItem[] // ✅ รายการสินค้าในคำสั่งซื้อนี้

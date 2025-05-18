@@ -1,34 +1,67 @@
-import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+// src/app/api/payments/route.ts
 
-export async function POST(request: Request) {
-  const { userId, orderId, paymentMethod } = await request.json();
+import { prisma } from '@/lib/prisma'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/authOptions'
+import { NextResponse } from 'next/server'
+import { writeFile } from 'fs/promises'
+import path from 'path'
 
-  const order = await prisma.order.findUnique({
-    where: { id: orderId },
-  });
+export async function POST(req: Request) {
+  const session = await getServerSession(authOptions)
 
-  if (!order) {
-    return NextResponse.json({ error: 'Order not found' }, { status: 404 });
+  if (!session || !session.user?.email) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const totalAmount = order.totalAmount;
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+  })
 
-  const payment = await prisma.payment.create({
+  if (!user) {
+    return NextResponse.json({ error: 'User not found' }, { status: 404 })
+  }
+
+  const formData = await req.formData()
+  const orderId = formData.get('orderId') as string
+  const paymentMethod = formData.get('paymentMethod') as string
+  const file = formData.get('file') as File
+
+  let proofImageUrl = ''
+  if (file) {
+    const bytes = await file.arrayBuffer()
+    const buffer = Buffer.from(bytes)
+    const filename = `${Date.now()}-${file.name}`
+    const filePath = path.join(process.cwd(), 'public', 'uploads', filename)
+
+    await writeFile(filePath, buffer)
+    proofImageUrl = `/uploads/${filename}`
+  }
+
+  const order = await prisma.order.findUnique({
+    where: { id: parseInt(orderId), userId: user.id },
+  })
+
+  if (!order) {
+    return NextResponse.json({ error: 'Order not found' }, { status: 404 })
+  }
+
+  await prisma.payment.create({
     data: {
-      userId,                // ✅ ใช้ได้แล้ว
-      orderId,
-      paymentMethod,         // ✅ ใช้ได้แล้ว
-      amount: totalAmount,   // ✅ ต้องมี
-       // ✅ ใช้ซ้ำสำหรับ field 'method'
+      userId: user.id,
+      orderId: order.id,
+      amount: order.totalAmount,
+      paymentMethod,
+      proofImageUrl,
       status: 'completed',
     },
-  });
+  })
 
-  const updatedOrder = await prisma.order.update({
-    where: { id: orderId },
+  await prisma.order.update({
+    where: { id: order.id },
     data: { status: 'paid' },
-  });
+  })
 
-  return NextResponse.json({ payment, updatedOrder });
+  return NextResponse.json({ success: true })
 }
+

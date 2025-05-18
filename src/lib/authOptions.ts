@@ -1,7 +1,8 @@
 // src/lib/authOptions.ts
+
 import { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { prisma } from "./prisma"; // ต้อง import prisma เพื่อให้ฟังก์ชัน authorize ใช้ได้
+import { prisma } from "./prisma";
 import bcrypt from "bcryptjs";
 
 export const authOptions: AuthOptions = {
@@ -23,9 +24,7 @@ export const authOptions: AuthOptions = {
 
         if (!user) return null;
 
-        // เปรียบเทียบรหัสผ่านแบบ hashed
         const isValid = await bcrypt.compare(credentials.password, user.password);
-
         if (!isValid) return null;
 
         return {
@@ -43,16 +42,24 @@ export const authOptions: AuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
+    async jwt({ token, user }) {
+      // เพิ่ม user.id เข้า token ตอน login
+      if (user) {
+        token.id = user.id;
+        token.email = user.email;
+      }
+      return token;
+    },
     async session({ session, token }) {
+      // ดึง token.id มาใส่ใน session.user.id
       session.user = session.user || {};
+      if (token?.id) {
+        session.user.id = token.id as string;
+      }
       if (token?.email) {
         session.user.email = token.email as string;
       }
       return session;
-    },
-    async jwt({ token, user }) {
-      if (user) token.email = user.email;
-      return token;
     },
   },
 };
