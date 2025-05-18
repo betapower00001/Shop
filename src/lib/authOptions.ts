@@ -2,6 +2,7 @@
 import { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "./prisma"; // ต้อง import prisma เพื่อให้ฟังก์ชัน authorize ใช้ได้
+import bcrypt from "bcryptjs";
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -12,19 +13,26 @@ export const authOptions: AuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const user = await prisma.user.findUnique({
-          where: { email: credentials?.email },
-        });
-
-        if (user && user.password === credentials?.password) {
-          return {
-            id: user.id.toString(), // 👈 แปลง id ให้เป็น string
-            name: user.name,
-            email: user.email,
-          };
+        if (!credentials?.email || !credentials.password) {
+          return null;
         }
 
-        return null;
+        const user = await prisma.user.findUnique({
+          where: { email: credentials.email },
+        });
+
+        if (!user) return null;
+
+        // เปรียบเทียบรหัสผ่านแบบ hashed
+        const isValid = await bcrypt.compare(credentials.password, user.password);
+
+        if (!isValid) return null;
+
+        return {
+          id: user.id.toString(),
+          name: user.name,
+          email: user.email,
+        };
       },
     }),
   ],
@@ -35,16 +43,14 @@ export const authOptions: AuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
-    // แก้ตรงนี้ให้แน่ใจว่า session.user มี email และไม่เกิด undefined
     async session({ session, token }) {
-      session.user = session.user || {}; // กันกรณี session.user เป็น undefined
+      session.user = session.user || {};
       if (token?.email) {
-        session.user.email = token.email as string; // cast email เป็น string เพื่อไม่ให้เกิด error
+        session.user.email = token.email as string;
       }
       return session;
     },
     async jwt({ token, user }) {
-      // ถ้ามี user ที่ล็อกอิน ให้เอา email ใส่ใน token
       if (user) token.email = user.email;
       return token;
     },

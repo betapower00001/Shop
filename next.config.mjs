@@ -12,6 +12,7 @@ const nextConfig = {
       'res.cloudinary.com',          // ถ้าใช้ Cloudinary 
       'www.smartraum.de',
       'www.istore.co.za',
+      'down-th.img.susercontent.com',
       // เพิ่มโดเมนอื่น ๆ ที่คุณจะใช้เก็บรูป
     ],
   },

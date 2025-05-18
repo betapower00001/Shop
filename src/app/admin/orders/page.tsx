@@ -1,12 +1,38 @@
+// src/app/admin/Order/page.tsx
+
 import { prisma } from '@/lib/prisma';
 
+type Product = {
+  id: number;
+  name: string;
+};
+
+type OrderItem = {
+  id: number;
+  product: Product;
+  quantity: number;
+};
+
+type User = {
+  id: number;
+  name: string | null;
+};
+
+type Order = {
+  id: number;
+  status: string;
+  createdAt: Date;
+  user: User;
+  orderItems: OrderItem[];
+};
+
 export default async function AdminOrdersPage() {
-  const orders = await prisma.order.findMany({
+  const orders: Order[] = await prisma.order.findMany({
     include: {
-      user: true, // ข้อมูลผู้ใช้
+      user: true,
       orderItems: {
         include: {
-          product: true, // โหลดสินค้าภายในแต่ละ order item
+          product: true,
         },
       },
     },
@@ -32,19 +58,23 @@ export default async function AdminOrdersPage() {
           {orders.map((order) => (
             <tr key={order.id}>
               <td className="py-2 px-4 border-b">{order.id}</td>
-              <td className="py-2 px-4 border-b">{order.user.name}</td>
+              <td className="py-2 px-4 border-b">{order.user?.name || '-'}</td>
               <td className="py-2 px-4 border-b">
                 <ul>
                   {order.orderItems.map((item) => (
                     <li key={item.id}>
-                      {item.product.name} x {item.quantity}
+                      {item.product?.name || 'Unknown'} x {item.quantity}
                     </li>
                   ))}
                 </ul>
               </td>
               <td className="py-2 px-4 border-b">{order.status}</td>
               <td className="py-2 px-4 border-b">
-                {new Date(order.createdAt).toLocaleDateString()}
+                {new Date(order.createdAt).toLocaleDateString('th-TH', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                })}
               </td>
             </tr>
           ))}

@@ -1,31 +1,44 @@
 // src/app/api/orders/route.ts
-import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { NextResponse } from 'next/server'
+import { prisma } from '@/lib/prisma'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/authOptions'
 
 export async function POST(request: Request) {
-  const { userId, cartItems } = await request.json();
+  const session = await getServerSession(authOptions)
+  if (!session || !session.user?.email) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
 
-  // คำนวณยอดรวมจากสินค้าทั้งหมดในตะกร้า
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+  })
+
+  if (!user) {
+    return NextResponse.json({ error: 'User not found' }, { status: 404 })
+  }
+
+  const { cartItems } = await request.json()
+
   const totalAmount = cartItems.reduce(
     (sum: number, item: any) => sum + item.price * item.quantity,
     0
-  );
+  )
 
-  // สร้างคำสั่งซื้อ (Order)
   const order = await prisma.order.create({
     data: {
-      userId,
+      userId: user.id,
       totalAmount,
-      status: "pending",
+      status: 'pending',
       orderItems: {
-        // ใช้ชื่อ field ให้ตรงกับ schema
         create: cartItems.map((item: any) => ({
           productId: item.productId,
           quantity: item.quantity,
-          totalAmount: item.quantity * item.price,
+          totalAmount: item.price * item.quantity,
         })),
       },
     },
-  });
-  return NextResponse.json({ order });
+  })
+
+  return NextResponse.json({ order })
 }

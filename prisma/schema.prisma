@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-   output   = "./node_modules/@prisma/client"
 }
 
 datasource db {
@@ -11,8 +10,10 @@ datasource db {
 model User {
   id        Int        @id @default(autoincrement())
   email     String     @unique
-  name      String?
+  name      String?     // ✅ คงไว้แบบ optional
   password  String
+  address   String?     // ✅ ใส่ ? ให้ nullable
+  phone     String?     // ✅ ใส่ ? ให้ nullable
   orders    Order[]
   cartItems CartItem[] // เพิ่มบรรทัดนี้
   payments  Payment[] // เพิ่มบรรทัดนี้ (ถ้าอยากเชื่อมกับ Payment ด้วย)
@@ -39,6 +40,8 @@ model Order {
   totalAmount Float
   status      String   @default("pending")
   createdAt   DateTime @default(now())
+  shippingAddress String? // เพิ่มที่อยู่จัดส่งในคำสั่งซื้อ
+  trackingNumber  String? // หมายเลขพัสดุ
 
   user       User        @relation(fields: [userId], references: [id])
   orderItems OrderItem[] // ✅ รายการสินค้าในคำสั่งซื้อนี้
@@ -64,6 +67,7 @@ model Payment {
   paidAt        DateTime @default(now())
   userId        Int
   paymentMethod String // ควรใช้ชื่อเดียว (ลบ 'method' ถ้ามี)
+  proofImageUrl String? // ลิงก์สลิปการโอน
 
   order Order @relation(fields: [orderId], references: [id])
   user  User  @relation(fields: [userId], references: [id]) // เพิ่ม relation กับ User ด้วย ถ้าต้องการ

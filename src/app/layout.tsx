@@ -7,6 +7,8 @@ import { Anuphan } from "next/font/google";
 import type { Metadata } from "next";
 import { Providers } from "@/components/Providers";
 import Menubar from "@/components/Navbar/page";
+import BootstrapClientOnlyLoader from '@/components/BootstrapClientOnlyLoader';
+
 
 
 const anuphan = Anuphan({
@@ -31,6 +33,7 @@ export default function RootLayout({
       <body className={anuphan.className}>
         <Providers>
           <Menubar />
+          <BootstrapClientOnlyLoader />
           <main>{children}</main>              
         </Providers>
       </body>

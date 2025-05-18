@@ -1,15 +1,21 @@
-import { prisma } from '@/lib/prisma';
-import ProductCard from '@/components/ProductCard';
+// src/app/products/page.tsx
 
+import { prisma } from "@/lib/prisma";
+import ProductCard from "@/components/ProductCard";
 
 export default async function ProductPage() {
   const products = await prisma.product.findMany();
 
   return (
-    <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {products.map(product => (
-        <ProductCard key={product.id} product={product} />
-      ))}
+    <div className="container py-4">
+        <div style={{textAlign:'center', fontSize:'30px',padding:'2rem'}}>สินค้าทั้งหมด</div>
+      <div className="row g-5">
+        {products.map((product) => (
+          <div key={product.id} className="col-12 col-sm-6 col-lg-4">
+            <ProductCard product={product} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
