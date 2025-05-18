@@ -17,7 +17,6 @@ export default function CheckoutPage() {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("bank_transfer");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -30,8 +29,6 @@ export default function CheckoutPage() {
         const res = await fetch(`/api/products/${item.productId}`);
         if (res.ok) {
           validItems.push(item);
-        } else {
-          console.warn(`สินค้า id ${item.productId} ไม่มีในระบบ`);
         }
       }
 
@@ -49,10 +46,7 @@ export default function CheckoutPage() {
     async function fetchUser() {
       try {
         const res = await fetch(`/api/user/${userId}`);
-        if (!res.ok) {
-          const errText = await res.text();
-          throw new Error(errText);
-        }
+        if (!res.ok) throw new Error(await res.text());
         const user = await res.json();
         setName(user.name || "");
         setAddress(user.address || "");
@@ -67,20 +61,13 @@ export default function CheckoutPage() {
   }, [userId]);
 
   const handleCheckout = async () => {
-    if (!userId) {
-      alert("ไม่พบรหัสผู้ใช้ กรุณาเข้าสู่ระบบใหม่");
+    if (!userId || !name || !address || !phone || items.length === 0) {
+      alert("กรุณากรอกข้อมูลให้ครบถ้วน");
       return;
     }
 
-    if (!name.trim() || !address.trim() || !phone.trim()) {
-      alert("กรุณากรอกข้อมูลให้ครบ");
-      return;
-    }
-
-    if (items.length === 0) {
-      alert("ไม่มีสินค้าในตะกร้า");
-      return;
-    }
+    const confirm = window.confirm("ยืนยันการสั่งซื้อใช่หรือไม่?");
+    if (!confirm) return;
 
     setIsLoading(true);
 
@@ -96,7 +83,7 @@ export default function CheckoutPage() {
           totalAmount: totalPrice,
           paymentMethod,
           orderItems: items.map((item) => ({
-            productId: item.productId, // แก้ตรงนี้
+            productId: item.productId,
             quantity: item.quantity,
             totalAmount: item.price * item.quantity,
           })),
@@ -118,8 +105,6 @@ export default function CheckoutPage() {
           alert("ยืนยันคำสั่งซื้อสำเร็จ! รอเจ้าหน้าที่ติดต่อกลับ");
           router.push("/order-success");
           break;
-        default:
-          alert("วิธีการชำระเงินไม่ถูกต้อง");
       }
     } catch (error: any) {
       alert("เกิดข้อผิดพลาด: " + error.message);
@@ -128,13 +113,19 @@ export default function CheckoutPage() {
     }
   };
 
-  if (status === "loading") {
-    return <p className="text-center mt-10">กำลังโหลดข้อมูลผู้ใช้...</p>;
-  }
+  const renderPaymentInfo = () => {
+    switch (paymentMethod) {
+      case "bank_transfer":
+        return <p className="text-sm text-gray-600 mt-1">💸 โอนเงินผ่านบัญชีธนาคาร และอัปโหลดสลิป</p>;
+      case "credit_card":
+        return <p className="text-sm text-gray-600 mt-1">💳 ชำระเงินด้วยบัตรเครดิตผ่านระบบจำลอง</p>;
+      case "cod":
+        return <p className="text-sm text-gray-600 mt-1">📦 ชำระเงินกับพนักงานจัดส่ง (COD)</p>;
+    }
+  };
 
-  if (!session) {
-    return <p className="text-center mt-10">กรุณาเข้าสู่ระบบก่อนทำรายการ</p>;
-  }
+  if (status === "loading") return <p className="text-center mt-10">กำลังโหลดข้อมูลผู้ใช้...</p>;
+  if (!session) return <p className="text-center mt-10">กรุณาเข้าสู่ระบบก่อนทำรายการ</p>;
 
   return (
     <div className="max-w-md mx-auto p-4">
@@ -143,59 +134,52 @@ export default function CheckoutPage() {
       <ul className="mb-4">
         {items.length === 0 && <p>ไม่มีสินค้าในตะกร้า</p>}
         {items.map((item) => (
-          <li key={item.id} className="py-1">
+          <li key={item.id} className="py-2 border-b">
             <div className="flex justify-between">
-              <span>
-                {item.name} (x{item.quantity})
-              </span>
-              <span>ราคาชิ้นละ {item.price.toFixed(2)} บาท</span>
+              <span>{item.name} (x{item.quantity})</span>
+              <span>฿{item.price.toFixed(2)}</span>
             </div>
             <div className="text-right text-sm text-gray-500">
-              รวม {(item.price * item.quantity).toFixed(2)} บาท
+              รวม: ฿{(item.price * item.quantity).toFixed(2)}
             </div>
           </li>
         ))}
       </ul>
-      <div className="font-bold mb-4">ยอดรวม: {totalPrice.toFixed(2)} บาท</div>
 
-      <div className="mb-4 space-y-2">
+      <div className="font-bold mb-4">ยอดรวม: ฿{totalPrice.toFixed(2)}</div>
+
+      <div className="mb-4 space-y-3">
         <div>
           <label className="block mb-1 font-medium">ชื่อผู้รับ:</label>
           <input
-            type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="w-full border px-2 py-1"
             placeholder="ชื่อผู้รับ"
           />
         </div>
-
         <div>
           <label className="block mb-1 font-medium">ที่อยู่จัดส่ง:</label>
           <textarea
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             className="w-full border px-2 py-1"
-            rows={3}
-            placeholder="ที่อยู่จัดส่ง"
+            rows={2}
+            placeholder="ที่อยู่"
           />
         </div>
-
         <div>
-          <label className="block mb-1 font-medium">เบอร์โทรศัพท์:</label>
+          <label className="block mb-1 font-medium">เบอร์โทร:</label>
           <input
-            type="tel"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             className="w-full border px-2 py-1"
-            placeholder="เบอร์โทรศัพท์"
+            placeholder="เบอร์โทร"
           />
         </div>
-
         <div>
           <label className="block mb-1 font-medium">อีเมล:</label>
           <input
-            type="email"
             value={session?.user?.email ?? ""}
             readOnly
             className="w-full border px-2 py-1 bg-gray-100 text-gray-500"
@@ -204,22 +188,23 @@ export default function CheckoutPage() {
       </div>
 
       <div className="mb-4">
-        <label>วิธีการชำระเงิน:</label>
+        <label className="block mb-1 font-medium">วิธีการชำระเงิน:</label>
         <select
           value={paymentMethod}
           onChange={(e) => setPaymentMethod(e.target.value)}
           className="w-full border px-2 py-1"
         >
-          <option value="bank_transfer">โอนเงิน</option>
-          <option value="credit_card">บัตรเครดิต</option>
-          <option value="cod">เก็บเงินปลายทาง</option>
+          <option value="bank_transfer">💸 โอนเงินผ่านธนาคาร</option>
+          <option value="credit_card">💳 บัตรเครดิต</option>
+          <option value="cod">📦 เก็บเงินปลายทาง</option>
         </select>
+        {renderPaymentInfo()}
       </div>
 
       <button
         onClick={handleCheckout}
         disabled={isLoading || items.length === 0}
-        className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
+        className="bg-blue-600 text-white px-4 py-2 rounded w-full disabled:opacity-50"
       >
         {isLoading ? "กำลังดำเนินการ..." : "ยืนยันคำสั่งซื้อ"}
       </button>
