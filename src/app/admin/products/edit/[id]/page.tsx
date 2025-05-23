@@ -4,10 +4,12 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 
 export default function EditProductPage() {
   const { id } = useParams()
   const router = useRouter()
+  const { data: session, status } = useSession()
 
   const [form, setForm] = useState({
     name: '',
@@ -19,8 +21,17 @@ export default function EditProductPage() {
 
   const [loading, setLoading] = useState(true)
 
-  // ดึงข้อมูลสินค้าเดิมมาแสดง
+  // 🔒 ตรวจสอบ role admin
   useEffect(() => {
+    if (status === 'loading') return
+    if (!session || session.user.role !== 'admin') {
+      router.replace('/403')
+    }
+  }, [session, status])
+
+  // ดึงข้อมูลสินค้าเดิม
+  useEffect(() => {
+    if (!id) return
     fetch(`/api/products/${id}`)
       .then((res) => res.json())
       .then((data) => {
@@ -66,7 +77,7 @@ export default function EditProductPage() {
     router.push('/admin/products')
   }
 
-  if (loading) return <p>Loading...</p>
+  if (status === 'loading' || loading) return <p className="p-6">กำลังโหลด...</p>
 
   return (
     <div className="max-w-xl mx-auto p-4">

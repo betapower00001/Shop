@@ -124,8 +124,8 @@ export default function CheckoutPage() {
     }
   };
 
-  if (status === "loading") return <p className="text-center mt-10">กำลังโหลดข้อมูลผู้ใช้...</p>;
-  if (!session) return <p className="text-center mt-10">กรุณาเข้าสู่ระบบก่อนทำรายการ</p>;
+  if (status === "loading") return <p className="text-center mt-10 py-12">กำลังโหลดข้อมูลผู้ใช้...</p>;
+  if (!session) return <p className="text-center mt-10 py-12">กรุณาเข้าสู่ระบบก่อนทำรายการ</p>;
 
   return (
     <div className="max-w-md mx-auto p-4">

@@ -7,7 +7,7 @@ export default async function ProductPage() {
   const products = await prisma.product.findMany();
 
   return (
-    <div className="container py-4">
+    <div className="container" style={{paddingTop:'5rem'}}>
         <div style={{textAlign:'center', fontSize:'30px',padding:'2rem'}}>สินค้าทั้งหมด</div>
       <div className="row g-5">
         {products.map((product) => (

@@ -20,6 +20,13 @@ export const authOptions: AuthOptions = {
 
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            password: true,
+            role: true,  // ดึง role ด้วย
+          },
         });
 
         if (!user) return null;
@@ -31,6 +38,7 @@ export const authOptions: AuthOptions = {
           id: user.id.toString(),
           name: user.name,
           email: user.email,
+          role: user.role,
         };
       },
     }),
@@ -43,22 +51,19 @@ export const authOptions: AuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
-      // เพิ่ม user.id เข้า token ตอน login
       if (user) {
         token.id = user.id;
         token.email = user.email;
+        token.role = (user as any).role;
       }
       return token;
     },
     async session({ session, token }) {
-      // ดึง token.id มาใส่ใน session.user.id
       session.user = session.user || {};
-      if (token?.id) {
-        session.user.id = token.id as string;
-      }
-      if (token?.email) {
-        session.user.email = token.email as string;
-      }
+      if (token?.id) session.user.id = token.id as string;
+      if (token?.email) session.user.email = token.email as string;
+      // @ts-ignore ป้องกัน error จาก typescript ถ้า user ไม่มี role ใน type
+      session.user.role = token.role as string;
       return session;
     },
   },

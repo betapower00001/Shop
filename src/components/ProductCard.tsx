@@ -43,7 +43,7 @@ export default function ProductCard({ product }: { product: Product }) {
         </p>
 
         <button
-          className={`btn btn-primary mt-auto ${styles.button}`}
+          className={`btn btn-primary mt-auto  ${styles.button}`}
           onClick={() => {
             addToCart(1, product, 1);
             console.log("✅ เพิ่มสินค้าลงตะกร้าแล้ว:", product.name);

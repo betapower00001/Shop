@@ -1,14 +1,29 @@
-'use client'
 // src/app/admin/products/page.tsx
+
+'use client'
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { Product } from '@/types/product'
 import { Button } from '@/components/ui/button'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 
 export default function AdminProductPage() {
+  const { data: session, status } = useSession()
+  const router = useRouter()
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    // ตรวจสอบสิทธิ์ admin
+    if (status === 'loading') return // ยังโหลด session อยู่
+    if (!session || session.user.role !== 'admin') {
+      router.replace('/403') // ✅ redirect ถ้าไม่ใช่ admin
+    } else {
+      fetchProducts()
+    }
+  }, [session, status])
 
   const fetchProducts = async () => {
     const res = await fetch('/api/products')
@@ -31,9 +46,9 @@ export default function AdminProductPage() {
     }
   }
 
-  useEffect(() => {
-    fetchProducts()
-  }, [])
+  if (status === 'loading') {
+    return <p className="p-6">กำลังโหลดข้อมูล...</p>
+  }
 
   return (
     <div className="p-6">
