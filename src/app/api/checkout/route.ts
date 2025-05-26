@@ -3,6 +3,22 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
+interface OrderItem {
+  productId: number
+  quantity: number
+  totalAmount: number
+}
+
+interface CheckoutRequest {
+  userId: string
+  shippingName: string
+  shippingAddress: string
+  shippingPhone: string
+  totalAmount: number
+  paymentMethod: string
+  orderItems: OrderItem[]
+}
+
 export async function POST(req: NextRequest) {
   try {
     const {
@@ -13,9 +29,9 @@ export async function POST(req: NextRequest) {
       totalAmount,
       paymentMethod,
       orderItems,
-    } = await req.json()
+    }: CheckoutRequest = await req.json()
 
-    const userIdInt = parseInt(userId, 10);
+    const userIdInt = parseInt(userId, 10)
 
     if (isNaN(userIdInt)) {
       return NextResponse.json({ error: 'userId ต้องเป็นตัวเลข' }, { status: 400 })
@@ -30,19 +46,19 @@ export async function POST(req: NextRequest) {
     }
 
     // ตรวจสอบ productId ทั้งหมดใน orderItems ว่ามีอยู่จริงใน DB
-    const productIds = orderItems.map((item: any) => item.productId);
+    const productIds = orderItems.map((item) => item.productId)
     const existingProducts = await prisma.product.findMany({
       where: { id: { in: productIds } },
       select: { id: true },
-    });
-    const existingProductIds = existingProducts.map(p => p.id);
+    })
+    const existingProductIds = existingProducts.map((p) => p.id)
 
-    const invalidProductId = productIds.find((id: number) => !existingProductIds.includes(id));
+    const invalidProductId = productIds.find((id: number) => !existingProductIds.includes(id))
     if (invalidProductId) {
       return NextResponse.json(
         { error: `สินค้า id ${invalidProductId} ไม่มีในระบบ` },
         { status: 400 }
-      );
+      )
     }
 
     // สร้าง Order
@@ -55,7 +71,7 @@ export async function POST(req: NextRequest) {
         totalAmount,
         status: 'pending',
         orderItems: {
-          create: orderItems.map((item: any) => ({
+          create: orderItems.map((item) => ({
             productId: item.productId,
             quantity: item.quantity,
             totalAmount: item.totalAmount,
@@ -76,8 +92,9 @@ export async function POST(req: NextRequest) {
     })
 
     return NextResponse.json({ orderId: newOrder.id })
-  } catch (error: any) {
+  } catch (error) {
     console.error(error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    const err = error as Error
+    return NextResponse.json({ error: err.message }, { status: 500 })
   }
 }
