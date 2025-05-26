@@ -11,7 +11,10 @@ interface CartItem {
   price: number
 }
 
-// ✅ แก้ GET ให้เหมือนเดิม
+interface OrderRequest {
+  cartItems: CartItem[]
+}
+
 export async function GET() {
   try {
     const orders = await prisma.order.findMany({
@@ -35,7 +38,6 @@ export async function GET() {
   }
 }
 
-// ✅ POST พร้อม type แบบไม่ใช้ any
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions)
   if (!session || !session.user?.email) {
@@ -50,7 +52,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'User not found' }, { status: 404 })
   }
 
-  const body = await request.json()
+  const body: OrderRequest = await request.json()
   const cartItems: CartItem[] = body.cartItems
 
   const totalAmount = cartItems.reduce(

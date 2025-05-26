@@ -21,7 +21,7 @@ interface CheckoutRequest {
 
 export async function POST(req: NextRequest) {
   try {
-    const body = (await req.json()) as CheckoutRequest
+    const body: CheckoutRequest = await req.json()
 
     const {
       userId,
@@ -47,7 +47,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'ไม่มีสินค้าในคำสั่งซื้อ' }, { status: 400 })
     }
 
-    // ตรวจสอบ productId ทั้งหมดใน orderItems ว่ามีอยู่จริงใน DB
     const productIds = orderItems.map((item) => item.productId)
     const existingProducts = await prisma.product.findMany({
       where: { id: { in: productIds } },
@@ -55,7 +54,7 @@ export async function POST(req: NextRequest) {
     })
     const existingProductIds = existingProducts.map((p) => p.id)
 
-    const invalidProductId = productIds.find((id: number) => !existingProductIds.includes(id))
+    const invalidProductId = productIds.find((id) => !existingProductIds.includes(id))
     if (invalidProductId) {
       return NextResponse.json(
         { error: `สินค้า id ${invalidProductId} ไม่มีในระบบ` },
@@ -63,7 +62,6 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // สร้าง Order
     const newOrder = await prisma.order.create({
       data: {
         userId: userIdInt,
@@ -82,7 +80,6 @@ export async function POST(req: NextRequest) {
       },
     })
 
-    // สร้าง Payment พร้อมระบุ paymentMethod
     await prisma.payment.create({
       data: {
         orderId: newOrder.id,
@@ -94,9 +91,11 @@ export async function POST(req: NextRequest) {
     })
 
     return NextResponse.json({ orderId: newOrder.id })
-  } catch (error) {
+  } catch (error: unknown) {
     console.error(error)
-    const err = error as Error
-    return NextResponse.json({ error: err.message }, { status: 500 })
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
+    return NextResponse.json({ error: 'เกิดข้อผิดพลาดไม่ทราบสาเหตุ' }, { status: 500 })
   }
 }
