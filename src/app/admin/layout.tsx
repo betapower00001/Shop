@@ -6,7 +6,7 @@ import AdminSidebar from "@/components/AdminSidebar";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="min-h-screen bg-gray-50 pt-[60px] md:pt-0 md:pl-64">
+    <div className="min-h-screen bg-gray-50 pt-[60px] md:pt-0 md:pl-64" style={{paddingTop:'4rem'}}>
       {/* Sidebar and mobile topbar handled inside AdminSidebar */}
       <AdminSidebar />
 
