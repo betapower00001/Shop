@@ -1,16 +1,25 @@
 //src/app/cart/page.tsx
+
 "use client";
 
 import React, { useEffect } from "react";
 import { useCartStore } from "@/store/cartStore";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function CartPage() {
-  const { items, totalItems, totalPrice, loadCart, removeItem, updateQuantity } = useCartStore();
+  const {
+    items,
+    totalItems,
+    totalPrice,
+    loadCart,
+    removeItem,
+    updateQuantity,
+  } = useCartStore();
   const router = useRouter();
 
   useEffect(() => {
-    loadCart(1); // โหลดตะกร้าของ userId=1
+    loadCart(1); // สมมุติ userId=1 แบบชั่วคราว
   }, [loadCart]);
 
   useEffect(() => {
@@ -18,26 +27,45 @@ export default function CartPage() {
   }, [items]);
 
   if (items.length === 0)
-    return <div className="text-center mt-10 text-gray-600 text-lg">🛒 ตะกร้าว่างเปล่า</div>;
+    return (
+      <div className="text-center mt-10 text-gray-600 text-lg">
+        🛒 ตะกร้าว่างเปล่า
+      </div>
+    );
 
   return (
-    <div className="max-w-3xl mx-auto px-4" style={{paddingTop:'7rem'}}>
+    <div className="max-w-3xl mx-auto px-4 pt-28">
       <h1 className="text-2xl font-bold mb-4">🧾 ตะกร้าสินค้า</h1>
-      <p className="mb-6 text-gray-700">รวม {totalItems} ชิ้น | ราคา {Number(totalPrice).toFixed(2)} บาท</p>
+      <p className="mb-6 text-gray-700">
+        รวม {totalItems} ชิ้น | ราคา {Number(totalPrice).toFixed(2)} บาท
+      </p>
 
       <ul className="space-y-6">
         {items.map((item) => (
-          <li key={item.id} className="flex items-start gap-4 p-4 border rounded-lg shadow-sm bg-white">
-            <img
-              src={item.image || "/placeholder.png"}
-              alt={item.name}
-              className="w-24 h-24 object-cover rounded border"
-            />
+          <li
+            key={item.id}
+            className="flex items-start gap-4 p-4 border rounded-lg shadow-sm bg-white"
+          >
+            <div className="relative w-24 h-24">
+              <Image
+                src={item.image || "/placeholder.png"}
+                alt={item.name}
+                fill
+                className="object-cover rounded border"
+              />
+            </div>
+
             <div className="flex-1">
               <div className="font-semibold text-lg">{item.name}</div>
               <div className="text-gray-500">ราคา {item.price} บาท</div>
+
               <div className="mt-2 flex items-center gap-2">
-                <label htmlFor={`qty-${item.id}`} className="text-sm text-gray-600">จำนวน:</label>
+                <label
+                  htmlFor={`qty-${item.id}`}
+                  className="text-sm text-gray-600"
+                >
+                  จำนวน:
+                </label>
                 <input
                   id={`qty-${item.id}`}
                   type="number"
@@ -45,11 +73,14 @@ export default function CartPage() {
                   min={1}
                   onChange={(e) => {
                     const qty = parseInt(e.target.value);
-                    if (qty > 0) updateQuantity(item.id, qty);
+                    if (!isNaN(qty) && qty > 0) {
+                      updateQuantity(item.id, qty);
+                    }
                   }}
                   className="w-16 px-2 py-1 border rounded text-center"
                 />
               </div>
+
               <button
                 onClick={() => removeItem(item.id)}
                 className="mt-2 text-red-500 hover:underline text-sm"

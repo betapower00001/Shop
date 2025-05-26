@@ -44,9 +44,13 @@ export default function CheckoutPage() {
         setName(user.name || "");
         setAddress(user.address || "");
         setPhone(user.phone || "");
-      } catch (error: any) {
+      } catch (error: unknown) {
         setError("เกิดข้อผิดพลาดในการโหลดข้อมูลผู้ใช้");
-        console.error(error);
+        if (error instanceof Error) {
+          console.error(error.message);
+        } else {
+          console.error("Unexpected error:", error);
+        }
       }
     }
 
@@ -98,8 +102,12 @@ export default function CheckoutPage() {
           router.push("/order-success");
           break;
       }
-    } catch (error: any) {
-      alert("เกิดข้อผิดพลาด: " + error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        alert("เกิดข้อผิดพลาด: " + error.message);
+      } else {
+        alert("เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ");
+      }
     } finally {
       setIsLoading(false);
     }
