@@ -8,7 +8,6 @@ import { Menu, X } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 import { useCartStore } from "@/store/cartStore";
 import Image from "next/image";
-import Logo from "@/components/Img/logored.png";
 import styles from "../Css/navbar.module.css";
 
 export default function Navbar() {
@@ -57,7 +56,7 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <Link href="/" className="no-underline flex items-center gap-2">
-          <Image src={Logo} alt="Shop Logo" width={100} height={40} />
+          <Image src="/Img/logored.png" alt="Shop Logo" width={100} height={40} />
           <span
             className={`text-xl font-bold drop-shadow-md transition-colors duration-300 ${scrolled ? "text-gray-700" : "text-white"
               }`}
