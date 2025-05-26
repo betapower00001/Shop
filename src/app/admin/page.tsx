@@ -1,11 +1,19 @@
 // src/app/admin/page.tsx
+<<<<<<< HEAD
 import { prisma } from '@/lib/prisma';
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/authOptions";
+=======
+import { prisma } from "@/lib/prisma";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/authOptions";
+import { redirect } from "next/navigation";
+>>>>>>> 70e963041571d4679908475380d3f10ea57b007d
 
 export default async function AdminPage() {
   const session = await getServerSession(authOptions);
 
+<<<<<<< HEAD
   if (!session || session.user.role !== "admin") {
     return (
       <div className="text-center mt-20">
@@ -13,21 +21,30 @@ export default async function AdminPage() {
         <p>คุณไม่มีสิทธิ์เข้าถึงหน้านี้</p>
       </div>
     );
+=======
+  // ตรวจสอบสิทธิ์ admin
+  if (!session || session.user.role !== "admin") {
+    redirect("/403"); // ✅ redirect ไปหน้า 403 โดยตรง
+>>>>>>> 70e963041571d4679908475380d3f10ea57b007d
   }
 
   const products = await prisma.product.findMany({
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
   });
 
   return (
-    <div>
+    <div className="max-w-4xl mx-auto py-8">
       <h1 className="text-2xl font-bold mb-4">จัดการสินค้า</h1>
+
       {products.length === 0 ? (
-        <p>ยังไม่มีสินค้า</p>
+        <p className="text-gray-500">ยังไม่มีสินค้า</p>
       ) : (
-        <ul className="space-y-3">
-          {products.map(product => (
-            <li key={product.id} className="border p-3 rounded shadow-sm bg-white">
+        <ul className="space-y-4">
+          {products.map((product) => (
+            <li
+              key={product.id}
+              className="border p-4 rounded-lg shadow bg-white"
+            >
               <div className="font-semibold">{product.name}</div>
               <div>ราคา: ฿{product.price}</div>
             </li>

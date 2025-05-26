@@ -118,8 +118,13 @@ export default function CheckoutPage() {
     }
   };
 
+<<<<<<< HEAD
   if (status === "loading") return <p className="text-center mt-10" style={{ paddingTop: '4rem' }}>กำลังโหลดข้อมูลผู้ใช้...</p>;
   if (!session) return <p className="text-center mt-10" style={{ paddingTop: '4rem' }}>กรุณาเข้าสู่ระบบก่อนทำรายการ</p>;
+=======
+  if (status === "loading") return <p className="text-center mt-10 py-12">กำลังโหลดข้อมูลผู้ใช้...</p>;
+  if (!session) return <p className="text-center mt-10 py-12">กรุณาเข้าสู่ระบบก่อนทำรายการ</p>;
+>>>>>>> 70e963041571d4679908475380d3f10ea57b007d
 
   return (
     <div style={{backgroundColor:'gray'}}>

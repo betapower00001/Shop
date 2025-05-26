@@ -1,8 +1,15 @@
 // src/app/admin/Order/page.tsx
+<<<<<<< HEAD
 
 'use client';
 
 import { useEffect, useState } from 'react';
+=======
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/authOptions";
+import { redirect } from "next/navigation";
+import { prisma } from "@/lib/prisma";
+>>>>>>> 70e963041571d4679908475380d3f10ea57b007d
 
 type Product = {
   id: number;
@@ -28,6 +35,7 @@ type Order = {
   orderItems: OrderItem[];
 };
 
+<<<<<<< HEAD
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
 
@@ -60,6 +68,29 @@ export default function AdminOrdersPage() {
       alert('เกิดข้อผิดพลาดในการอัปเดตสถานะ');
     }
   }
+=======
+export default async function AdminOrdersPage() {
+  const session = await getServerSession(authOptions);
+
+  // 🔒 ตรวจสอบสิทธิ์ admin
+  if (!session || session.user.role !== "admin") {
+    redirect("/403"); // ถ้าไม่ใช่ admin ให้ redirect
+  }
+
+  const orders: Order[] = await prisma.order.findMany({
+    include: {
+      user: true,
+      orderItems: {
+        include: {
+          product: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+>>>>>>> 70e963041571d4679908475380d3f10ea57b007d
 
   return (
     <div className="p-4">
@@ -78,12 +109,12 @@ export default function AdminOrdersPage() {
           {orders.map((order) => (
             <tr key={order.id}>
               <td className="py-2 px-4 border-b">{order.id}</td>
-              <td className="py-2 px-4 border-b">{order.user?.name || '-'}</td>
+              <td className="py-2 px-4 border-b">{order.user?.name || "-"}</td>
               <td className="py-2 px-4 border-b">
                 <ul>
                   {order.orderItems.map((item) => (
                     <li key={item.id}>
-                      {item.product?.name || 'Unknown'} x {item.quantity}
+                      {item.product?.name || "Unknown"} x {item.quantity}
                     </li>
                   ))}
                 </ul>
@@ -104,10 +135,10 @@ export default function AdminOrdersPage() {
                 </select>
               </td>
               <td className="py-2 px-4 border-b">
-                {new Date(order.createdAt).toLocaleDateString('th-TH', {
-                  year: 'numeric',
-                  month: 'short',
-                  day: 'numeric',
+                {new Date(order.createdAt).toLocaleDateString("th-TH", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
                 })}
               </td>
             </tr>
