@@ -1,27 +1,17 @@
 'use client'
 // src/app/admin/products/create/page.tsx
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useSession } from 'next-auth/react'
 
 export default function CreateProductPage() {
   const router = useRouter()
-  const { data: session, status } = useSession()
 
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [price, setPrice] = useState('')
   const [imageUrl, setImageUrl] = useState('')
   const [stock, setStock] = useState('0')
-
-  // 🔒 ตรวจสอบสิทธิ์
-  useEffect(() => {
-    if (status === 'loading') return
-    if (!session || session.user.role !== 'admin') {
-      router.replace('/403')
-    }
-  }, [session, status])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -44,8 +34,6 @@ export default function CreateProductPage() {
       alert('เพิ่มสินค้าไม่สำเร็จ')
     }
   }
-
-  if (status === 'loading') return <p className="p-6">กำลังโหลด...</p>
 
   return (
     <div className="max-w-xl mx-auto p-6">

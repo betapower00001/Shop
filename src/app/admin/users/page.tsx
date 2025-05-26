@@ -1,22 +1,13 @@
 // src/app/admin/users/page.tsx
-import { prisma } from '@/lib/prisma'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/authOptions'
-import { redirect } from 'next/navigation'
-import { User } from '@prisma/client'
+import { prisma } from '@/lib/prisma';
+import { User } from '@prisma/client'; 
 
 export default async function AdminUsersPage() {
-  const session = await getServerSession(authOptions)
-
-  if (!session || session.user.role !== 'admin') {
-    redirect('/403')
-  }
-
   const users: User[] = await prisma.user.findMany({
     orderBy: {
       createdAt: 'desc',
     },
-  })
+  });
 
   return (
     <div>
@@ -48,5 +39,5 @@ export default async function AdminUsersPage() {
         </tbody>
       </table>
     </div>
-  )
+  );
 }
