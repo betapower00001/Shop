@@ -21,6 +21,8 @@ interface CheckoutRequest {
 
 export async function POST(req: NextRequest) {
   try {
+    const body = (await req.json()) as CheckoutRequest
+
     const {
       userId,
       shippingName,
@@ -29,7 +31,7 @@ export async function POST(req: NextRequest) {
       totalAmount,
       paymentMethod,
       orderItems,
-    }: CheckoutRequest = await req.json()
+    } = body
 
     const userIdInt = parseInt(userId, 10)
 

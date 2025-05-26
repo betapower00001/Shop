@@ -5,7 +5,13 @@ import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/authOptions'
 
-// ✅ เพิ่มฟังก์ชันนี้
+interface CartItem {
+  productId: number
+  quantity: number
+  price: number
+}
+
+// ✅ แก้ GET ให้เหมือนเดิม
 export async function GET() {
   try {
     const orders = await prisma.order.findMany({
@@ -29,7 +35,7 @@ export async function GET() {
   }
 }
 
-// มีอยู่แล้ว: POST
+// ✅ POST พร้อม type แบบไม่ใช้ any
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions)
   if (!session || !session.user?.email) {
@@ -44,10 +50,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'User not found' }, { status: 404 })
   }
 
-  const { cartItems } = await request.json()
+  const body = await request.json()
+  const cartItems: CartItem[] = body.cartItems
 
   const totalAmount = cartItems.reduce(
-    (sum: number, item: any) => sum + item.price * item.quantity,
+    (sum, item) => sum + item.price * item.quantity,
     0
   )
 
@@ -57,7 +64,7 @@ export async function POST(request: Request) {
       totalAmount,
       status: 'pending',
       orderItems: {
-        create: cartItems.map((item: any) => ({
+        create: cartItems.map((item) => ({
           productId: item.productId,
           quantity: item.quantity,
           totalAmount: item.price * item.quantity,
