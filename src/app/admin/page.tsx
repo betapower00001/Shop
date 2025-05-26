@@ -1,7 +1,20 @@
 // src/app/admin/page.tsx
 import { prisma } from '@/lib/prisma';
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/authOptions";
 
 export default async function AdminPage() {
+  const session = await getServerSession(authOptions);
+
+  if (!session || session.user.role !== "admin") {
+    return (
+      <div className="text-center mt-20">
+        <h1 className="text-2xl font-bold mb-4">403 - Forbidden</h1>
+        <p>คุณไม่มีสิทธิ์เข้าถึงหน้านี้</p>
+      </div>
+    );
+  }
+
   const products = await prisma.product.findMany({
     orderBy: { createdAt: 'desc' },
   });

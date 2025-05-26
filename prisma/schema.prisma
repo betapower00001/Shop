@@ -18,6 +18,8 @@ model User {
   cartItems CartItem[] // เพิ่มบรรทัดนี้
   payments  Payment[] // เพิ่มบรรทัดนี้ (ถ้าอยากเชื่อมกับ Payment ด้วย)
   createdAt DateTime   @default(now())
+  role      String     @default("user") // "admin" หรือ "user"
+
 }
 
 model Product {

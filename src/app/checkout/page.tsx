@@ -24,19 +24,12 @@ export default function CheckoutPage() {
   useEffect(() => {
     const validateCartItems = async () => {
       const validItems = [];
-
       for (const item of items) {
         const res = await fetch(`/api/products/${item.productId}`);
-        if (res.ok) {
-          validItems.push(item);
-        }
+        if (res.ok) validItems.push(item);
       }
-
-      if (validItems.length !== items.length) {
-        setItems(validItems);
-      }
+      if (validItems.length !== items.length) setItems(validItems);
     };
-
     validateCartItems();
   }, [items, setItems]);
 
@@ -52,8 +45,8 @@ export default function CheckoutPage() {
         setAddress(user.address || "");
         setPhone(user.phone || "");
       } catch (error: any) {
-        console.error("Fetch user error:", error);
         setError("เกิดข้อผิดพลาดในการโหลดข้อมูลผู้ใช้");
+        console.error(error);
       }
     }
 
@@ -91,7 +84,6 @@ export default function CheckoutPage() {
       });
 
       if (!res.ok) throw new Error(await res.text());
-
       const { orderId } = await res.json();
 
       switch (paymentMethod) {
@@ -116,98 +108,113 @@ export default function CheckoutPage() {
   const renderPaymentInfo = () => {
     switch (paymentMethod) {
       case "bank_transfer":
-        return <p className="text-sm text-gray-600 mt-1">💸 โอนเงินผ่านบัญชีธนาคาร และอัปโหลดสลิป</p>;
+        return <p className="text-sm text-gray-600"> โอนเงินผ่านบัญชีธนาคาร และอัปโหลดสลิป</p>;
       case "credit_card":
-        return <p className="text-sm text-gray-600 mt-1">💳 ชำระเงินด้วยบัตรเครดิตผ่านระบบจำลอง</p>;
+        return <p className="text-sm text-gray-600"> ชำระเงินด้วยบัตรเครดิต</p>;
       case "cod":
-        return <p className="text-sm text-gray-600 mt-1">📦 ชำระเงินกับพนักงานจัดส่ง (COD)</p>;
+        return <p className="text-sm text-gray-600"> ชำระเงินปลายทาง</p>;
+      default:
+        return null;
     }
   };
 
-  if (status === "loading") return <p className="text-center mt-10">กำลังโหลดข้อมูลผู้ใช้...</p>;
-  if (!session) return <p className="text-center mt-10">กรุณาเข้าสู่ระบบก่อนทำรายการ</p>;
+  if (status === "loading") return <p className="text-center mt-10" style={{ paddingTop: '4rem' }}>กำลังโหลดข้อมูลผู้ใช้...</p>;
+  if (!session) return <p className="text-center mt-10" style={{ paddingTop: '4rem' }}>กรุณาเข้าสู่ระบบก่อนทำรายการ</p>;
 
   return (
-    <div className="max-w-md mx-auto p-4">
-      <h1 className="text-xl font-bold mb-4">สรุปคำสั่งซื้อ</h1>
+    <div style={{backgroundColor:'gray'}}>
+      <div className="max-w-6xl mx-auto mt-20 p-6">
+        <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">ชำระเงิน / Checkout</h1>
 
-      <ul className="mb-4">
-        {items.length === 0 && <p>ไม่มีสินค้าในตะกร้า</p>}
-        {items.map((item) => (
-          <li key={item.id} className="py-2 border-b">
-            <div className="flex justify-between">
-              <span>{item.name} (x{item.quantity})</span>
-              <span>฿{item.price.toFixed(2)}</span>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* ฝั่งซ้าย: ข้อมูลผู้ซื้อ */}
+          <div className="bg-white p-6 rounded-xl shadow-md border">
+            <h2 className="text-xl font-semibold mb-4 text-blue-700"> ข้อมูลผู้ซื้อ</h2>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block font-medium">ชื่อผู้รับ</label>
+                <input
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block font-medium">ที่อยู่จัดส่ง</label>
+                <textarea
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  rows={3}
+                  className="w-full border rounded-md px-3 py-2 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block font-medium">เบอร์โทร</label>
+                <input
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block font-medium">อีเมล</label>
+                <input
+                  value={session?.user?.email ?? ""}
+                  readOnly
+                  className="w-full border rounded-md px-3 py-2 bg-gray-100 text-gray-500"
+                />
+              </div>
             </div>
-            <div className="text-right text-sm text-gray-500">
-              รวม: ฿{(item.price * item.quantity).toFixed(2)}
+          </div>
+
+          {/* ฝั่งขวา: รายการสั่งซื้อ & การชำระเงิน */}
+          <div className="bg-white p-6 rounded-xl shadow-md border">
+            <h2 className="text-xl font-semibold mb-4 text-green-600"> รายการสั่งซื้อของคุณ</h2>
+
+            <ul className="divide-y divide-gray-200 mb-4">
+              {items.length === 0 ? (
+                <p className="text-center text-gray-500">ไม่มีสินค้าในตะกร้า</p>
+              ) : (
+                items.map((item) => (
+                  <li key={item.id} className="py-2 flex justify-between text-gray-800">
+                    <span>{item.name} (x{item.quantity})</span>
+                    <span>฿{(item.price * item.quantity).toFixed(2)}</span>
+                  </li>
+                ))
+              )}
+            </ul>
+
+            <div className="text-right font-bold text-lg text-gray-800 mb-6">
+              ยอดรวม: ฿{totalPrice.toFixed(2)}
             </div>
-          </li>
-        ))}
-      </ul>
 
-      <div className="font-bold mb-4">ยอดรวม: ฿{totalPrice.toFixed(2)}</div>
+            <div className="mb-4">
+              <label className="block font-medium text-gray-700"> วิธีชำระเงิน</label>
+              <select
+                value={paymentMethod}
+                onChange={(e) => setPaymentMethod(e.target.value)}
+                className="w-full border rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-green-500"
+              >
+                <option value="bank_transfer"> โอนเงินผ่านธนาคาร</option>
+                <option value="credit_card"> บัตรเครดิต</option>
+                <option value="cod"> เก็บเงินปลายทาง</option>
+              </select>
+              <div className="mt-2">{renderPaymentInfo()}</div>
+            </div>
 
-      <div className="mb-4 space-y-3">
-        <div>
-          <label className="block mb-1 font-medium">ชื่อผู้รับ:</label>
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full border px-2 py-1"
-            placeholder="ชื่อผู้รับ"
-          />
-        </div>
-        <div>
-          <label className="block mb-1 font-medium">ที่อยู่จัดส่ง:</label>
-          <textarea
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            className="w-full border px-2 py-1"
-            rows={2}
-            placeholder="ที่อยู่"
-          />
-        </div>
-        <div>
-          <label className="block mb-1 font-medium">เบอร์โทร:</label>
-          <input
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className="w-full border px-2 py-1"
-            placeholder="เบอร์โทร"
-          />
-        </div>
-        <div>
-          <label className="block mb-1 font-medium">อีเมล:</label>
-          <input
-            value={session?.user?.email ?? ""}
-            readOnly
-            className="w-full border px-2 py-1 bg-gray-100 text-gray-500"
-          />
+            <button
+              onClick={handleCheckout}
+              disabled={isLoading || items.length === 0}
+              className="w-full bg-green-600 hover:bg-green-700 disabled:bg-green-300 text-white font-semibold py-3 rounded-md transition disabled:cursor-not-allowed"
+            >
+              {isLoading ? "กำลังดำเนินการ..." : "ยืนยันคำสั่งซื้อ"}
+            </button>
+
+            {error && <p className="mt-4 text-red-600 text-center">{error}</p>}
+          </div>
         </div>
       </div>
-
-      <div className="mb-4">
-        <label className="block mb-1 font-medium">วิธีการชำระเงิน:</label>
-        <select
-          value={paymentMethod}
-          onChange={(e) => setPaymentMethod(e.target.value)}
-          className="w-full border px-2 py-1"
-        >
-          <option value="bank_transfer">💸 โอนเงินผ่านธนาคาร</option>
-          <option value="credit_card">💳 บัตรเครดิต</option>
-          <option value="cod">📦 เก็บเงินปลายทาง</option>
-        </select>
-        {renderPaymentInfo()}
-      </div>
-
-      <button
-        onClick={handleCheckout}
-        disabled={isLoading || items.length === 0}
-        className="bg-blue-600 text-white px-4 py-2 rounded w-full disabled:opacity-50"
-      >
-        {isLoading ? "กำลังดำเนินการ..." : "ยืนยันคำสั่งซื้อ"}
-      </button>
     </div>
   );
 }

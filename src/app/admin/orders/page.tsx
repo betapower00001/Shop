@@ -1,6 +1,8 @@
 // src/app/admin/Order/page.tsx
 
-import { prisma } from '@/lib/prisma';
+'use client';
+
+import { useEffect, useState } from 'react';
 
 type Product = {
   id: number;
@@ -21,30 +23,48 @@ type User = {
 type Order = {
   id: number;
   status: string;
-  createdAt: Date;
+  createdAt: string;
   user: User;
   orderItems: OrderItem[];
 };
 
-export default async function AdminOrdersPage() {
-  const orders: Order[] = await prisma.order.findMany({
-    include: {
-      user: true,
-      orderItems: {
-        include: {
-          product: true,
-        },
+export default function AdminOrdersPage() {
+  const [orders, setOrders] = useState<Order[]>([]);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      const res = await fetch('/api/orders');
+      const data = await res.json();
+      setOrders(data);
+    };
+    fetchOrders();
+  }, []);
+
+  async function handleStatusChange(orderId: number, newStatus: string) {
+    const res = await fetch(`/api/orders/${orderId}/status`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
-  });
+      body: JSON.stringify({ status: newStatus }),
+    });
+
+    if (res.ok) {
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.id === orderId ? { ...order, status: newStatus } : order
+        )
+      );
+      alert('อัปเดตสถานะเรียบร้อย');
+    } else {
+      alert('เกิดข้อผิดพลาดในการอัปเดตสถานะ');
+    }
+  }
 
   return (
-    <div>
+    <div className="p-4">
       <h1 className="text-xl font-bold mb-4">คำสั่งซื้อทั้งหมด</h1>
-      <table className="min-w-full bg-white">
+      <table className="min-w-full bg-white border">
         <thead>
           <tr>
             <th className="py-2 px-4 border-b">Order ID</th>
@@ -68,7 +88,21 @@ export default async function AdminOrdersPage() {
                   ))}
                 </ul>
               </td>
-              <td className="py-2 px-4 border-b">{order.status}</td>
+              <td className="py-2 px-4 border-b">
+                <select
+                  defaultValue={order.status}
+                  onChange={(e) =>
+                    handleStatusChange(order.id, e.target.value)
+                  }
+                  className="border px-2 py-1 rounded"
+                >
+                  <option value="pending">รอดำเนินการ</option>
+                  <option value="processing">กำลังจัดเตรียม</option>
+                  <option value="shipped">จัดส่งแล้ว</option>
+                  <option value="completed">สำเร็จ</option>
+                  <option value="cancelled">ยกเลิก</option>
+                </select>
+              </td>
               <td className="py-2 px-4 border-b">
                 {new Date(order.createdAt).toLocaleDateString('th-TH', {
                   year: 'numeric',

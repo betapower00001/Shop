@@ -9,6 +9,8 @@ type CartItem = {
   name: string;
   price: number;
   quantity: number;
+  image?: string | null; // ✅ เพิ่ม image property
+
 };
 
 type CartState = {

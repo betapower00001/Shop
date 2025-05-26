@@ -4,7 +4,7 @@ import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 interface CartRequestBody {
-  userId: number;
+  userId?: number;
   productId?: number;
   quantity?: number;
   cartItemId?: number;
@@ -14,22 +14,37 @@ interface CartRequestBody {
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const userIdParam = url.searchParams.get("userId");
-  const userId = userIdParam ? parseInt(userIdParam) : 1;
 
-  const cartItems = await prisma.cartItem.findMany({
-    where: { userId },
-    include: { product: true },
-  });
+  if (!userIdParam) {
+    return NextResponse.json({ error: "userId ไม่ถูกต้อง" }, { status: 400 });
+  }
 
-  const result = cartItems.map(item => ({
-    id: item.id,
-    productId: item.productId,
-    name: item.product.name,
-    price: item.product.price,
-    quantity: item.quantity,
-  }));
+  const userId = parseInt(userIdParam, 10);
 
-  return NextResponse.json(result);
+  if (isNaN(userId)) {
+    return NextResponse.json({ error: "userId ไม่ถูกต้อง" }, { status: 400 });
+  }
+
+  try {
+    const cartItems = await prisma.cartItem.findMany({
+      where: { userId },
+      include: { product: true },
+    });
+
+    const result = cartItems.map((item) => ({
+      id: item.id,
+      productId: item.productId,
+      name: item.product.name,
+      price: item.product.price,
+      quantity: item.quantity,
+      image: item.product.imageUrl || null,
+    }));
+
+    return NextResponse.json(result);
+  } catch (error) {
+    console.error("GET /api/cart error:", error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  }
 }
 
 // POST - เพิ่มสินค้าลงตะกร้า หรือเพิ่มจำนวนถ้ามีอยู่แล้ว
@@ -41,7 +56,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "ข้อมูลไม่ครบ" }, { status: 400 });
     }
 
-    // ใช้ upsert กับ composite key userId + productId
     await prisma.cartItem.upsert({
       where: {
         userId_productId: {
@@ -98,7 +112,11 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({ error: "ข้อมูลไม่ครบ" }, { status: 400 });
   }
 
-  const cartItemId = parseInt(cartItemIdParam);
+  const cartItemId = parseInt(cartItemIdParam, 10);
+
+  if (isNaN(cartItemId)) {
+    return NextResponse.json({ error: "cartItemId ไม่ถูกต้อง" }, { status: 400 });
+  }
 
   try {
     await prisma.cartItem.delete({

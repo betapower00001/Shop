@@ -5,6 +5,31 @@ import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/authOptions'
 
+// ✅ เพิ่มฟังก์ชันนี้
+export async function GET() {
+  try {
+    const orders = await prisma.order.findMany({
+      include: {
+        user: true,
+        orderItems: {
+          include: {
+            product: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
+
+    return NextResponse.json(orders)
+  } catch (error) {
+    console.error('โหลด orders ผิดพลาด:', error)
+    return NextResponse.json({ error: 'โหลด orders ผิดพลาด' }, { status: 500 })
+  }
+}
+
+// มีอยู่แล้ว: POST
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions)
   if (!session || !session.user?.email) {

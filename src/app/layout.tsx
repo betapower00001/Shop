@@ -1,4 +1,5 @@
 // src/app/layout.tsx
+
 import "./globals.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -8,7 +9,6 @@ import type { Metadata } from "next";
 import { Providers } from "@/components/Providers";
 import Menubar from "@/components/Navbar/page";
 import BootstrapClientOnlyLoader from '@/components/BootstrapClientOnlyLoader';
-
 
 
 const anuphan = Anuphan({
@@ -34,7 +34,7 @@ export default function RootLayout({
         <Providers>
           <Menubar />
           <BootstrapClientOnlyLoader />
-          <main>{children}</main>              
+          <main >{children}</main>              
         </Providers>
       </body>
     </html>

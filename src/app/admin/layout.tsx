@@ -1,12 +1,16 @@
 // src/app/admin/layout.tsx
-import { ReactNode } from 'react';
-import AdminSidebar from '@/components/AdminSidebar';
+"use client";
+
+import { ReactNode } from "react";
+import AdminSidebar from "@/components/AdminSidebar";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex min-h-screen">
+    <div className="min-h-screen bg-gray-50 pt-[60px] md:pt-0 md:pl-64" style={{paddingTop:'4rem'}}>
+      {/* Sidebar and mobile topbar handled inside AdminSidebar */}
       <AdminSidebar />
-      <main className="flex-1 p-6 bg-gray-50">{children}</main>
+
+      <main className="pt-[60px] md:pt-0 md:pl-64 p-4">{children}</main>
     </div>
   );
 }
