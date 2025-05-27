@@ -3,10 +3,11 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
+import PaymentForm from './PaymentForm';
 
 export default function PaymentsClient() {
   const searchParams = useSearchParams();
-  const id = searchParams.get('id');
+  const id = searchParams.get('id') ?? ''; // fallback กัน crash
 
-  return <div>Payment ID: {id}</div>;
+  return <PaymentForm orderId={id} />;
 }
