@@ -1,5 +1,4 @@
  //src/app/payments/PaymentForm.tsx
-
 'use client'
 
 import { useState, useEffect } from 'react'

@@ -1,10 +1,11 @@
  //src/app/payments/upload-slip/page.tsx
 
-
 'use client'
 
 import { useState } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
+
+export const dynamic = 'force-dynamic' // บังคับ dynamic rendering
 
 export default function UploadSlipPage() {
   const searchParams = useSearchParams()
