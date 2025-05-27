@@ -1,13 +1,12 @@
 // src/app/payments/credit-card/CreditCardClient.tsx
-
 'use client'
 
 import { useSearchParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 export default function CreditCardClient() {
-  const router = useRouter()
   const searchParams = useSearchParams()
+  const router = useRouter()
   const [orderId, setOrderId] = useState<string | null>(null)
 
   useEffect(() => {
@@ -15,9 +14,9 @@ export default function CreditCardClient() {
   }, [searchParams])
 
   useEffect(() => {
-    const simulatePayment = async () => {
-      if (!orderId) return
+    if (!orderId) return
 
+    const simulatePayment = async () => {
       await new Promise((r) => setTimeout(r, 2000))
 
       const formData = new FormData()

@@ -1,13 +1,12 @@
 // src/app/payments/credit-card/page.tsx
 
-export const dynamicMode = 'force-dynamic' // เปลี่ยนชื่อไม่ชนกับ import
-
-import dynamic from 'next/dynamic'
-
-const CreditCardClient = dynamic(() => import('./CreditCardClient'), {
-  ssr: false,
-})
+import React, { Suspense } from 'react'
+import CreditCardClient from './CreditCardClient'
 
 export default function CreditCardPage() {
-  return <CreditCardClient />
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <CreditCardClient />
+    </Suspense>
+  )
 }
