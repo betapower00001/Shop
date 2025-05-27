@@ -1,3 +1,5 @@
+// src/components/ProductForm.tsx
+
 'use client'
 
 import { useState } from 'react'
@@ -43,12 +45,17 @@ export default function ProductForm() {
       if (!res.ok) throw new Error('Failed to create product')
 
       router.push('/admin/products')
-    } catch (err: any) {
-      setError(err.message || 'Something went wrong')
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message)
+      } else {
+        setError('Something went wrong')
+      }
     } finally {
       setLoading(false)
     }
   }
+
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto">

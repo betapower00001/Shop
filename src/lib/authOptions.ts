@@ -54,7 +54,9 @@ export const authOptions: AuthOptions = {
       if (user) {
         token.id = user.id;
         token.email = user.email;
-        token.role = (user as any).role;
+        if (typeof user === 'object' && 'role' in user) {
+          token.role = (user as { role: string }).role;
+        }
       }
       return token;
     },
@@ -62,7 +64,6 @@ export const authOptions: AuthOptions = {
       session.user = session.user || {};
       if (token?.id) session.user.id = token.id as string;
       if (token?.email) session.user.email = token.email as string;
-      // @ts-ignore ป้องกัน error จาก typescript ถ้า user ไม่มี role ใน type
       session.user.role = token.role as string;
       return session;
     },
