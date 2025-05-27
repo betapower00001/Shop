@@ -1,5 +1,6 @@
 // src/app/payments/credit-card/CreditCardClient.tsx
 
+
 'use client' // ระบุว่าคอมโพเนนต์นี้เป็น Client Component
 
 import { useSearchParams, useRouter } from 'next/navigation'
