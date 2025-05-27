@@ -1,11 +1,10 @@
-'use client'
+'use client';
 
-import { useSearchParams } from 'next/navigation'
-import PaymentForm from './PaymentForm'
+import { useSearchParams } from 'next/navigation';
 
-export default function PaymentClient() {
-  const searchParams = useSearchParams()
-  const orderId = searchParams.get('orderId') || ''
+export default function PaymentsClient() {
+  const searchParams = useSearchParams();
+  const id = searchParams.get('id');
 
-  return <PaymentForm orderId={orderId} />
+  return <div>Payment ID: {id}</div>;
 }
