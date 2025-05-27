@@ -6,6 +6,8 @@
 import { useSearchParams, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
+export const dynamic = 'force-dynamic' // 💡 เพิ่มบรรทัดนี้
+
 export default function CreditCardPage() {
   const router = useRouter()
   const orderId = useSearchParams().get('orderId')
