@@ -1,11 +1,14 @@
 // src/app/payments/credit-card/page.tsx
-'use client';
 
-import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react'
+import CreditCardClient from './CreditCardClient'
 
-export default function CreditCardClient() {
-  const searchParams = useSearchParams();
-  const paymentMethod = searchParams.get('method');
+export const dynamic = 'force-dynamic'
 
-  return <div>Selected Method: {paymentMethod}</div>;
+export default function CreditCardPage() {
+  return (
+    <Suspense fallback={<div className="p-4">Loading...</div>}>
+      <CreditCardClient />
+    </Suspense>
+  )
 }

@@ -1,4 +1,5 @@
 // src/app/payments/credit-card/CreditCardClient.tsx.
+
 'use client'
 
 import { useEffect } from 'react'
@@ -6,11 +7,12 @@ import { useSearchParams, useRouter } from 'next/navigation'
 
 export default function CreditCardClient() {
   const router = useRouter()
-  const orderId = useSearchParams().get('orderId')
+  const searchParams = useSearchParams()
+  const orderId = searchParams.get('orderId')
 
   useEffect(() => {
     const simulatePayment = async () => {
-      await new Promise((r) => setTimeout(r, 2000)) // mock delay
+      await new Promise((r) => setTimeout(r, 2000))
       const formData = new FormData()
       formData.append('orderId', orderId || '')
       formData.append('paymentMethod', 'credit_card')
