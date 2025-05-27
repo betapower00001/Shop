@@ -1,6 +1,5 @@
 // src/app/order-success/page.tsx
-
-import Link from 'next/link';
+import Link from 'next/link' // เพิ่มบรรทัดนี้
 
 export default function OrderSuccessPage() {
   return (
@@ -13,5 +12,5 @@ export default function OrderSuccessPage() {
         </Link>
       </div>
     </div>
-  );
+  )
 }

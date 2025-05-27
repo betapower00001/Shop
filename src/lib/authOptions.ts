@@ -54,9 +54,7 @@ export const authOptions: AuthOptions = {
       if (user) {
         token.id = user.id;
         token.email = user.email;
-        if (typeof user === 'object' && 'role' in user) {
-          token.role = (user as { role: string }).role;
-        }
+        token.role = (user as { role: string }).role; // ✅ ชัดเจนกว่าการใช้ any
       }
       return token;
     },
@@ -68,4 +66,5 @@ export const authOptions: AuthOptions = {
       return session;
     },
   },
+
 };
