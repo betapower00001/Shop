@@ -1,16 +1,9 @@
  //src/app/payments/page.tsx
  
-'use client';
+'use client'
 
-import { Suspense } from 'react';
-import PaymentForm from './PaymentForm';
-
-export const dynamic = 'force-dynamic';
+import PaymentForm from './PaymentForm'
 
 export default function PaymentPage() {
-  return (
-    <Suspense fallback={<div>กำลังโหลด...</div>}>
-      <PaymentForm />
-    </Suspense>
-  );
+  return <PaymentForm />
 }
