@@ -1,11 +1,10 @@
 // src/app/payments/credit-card/page.tsx
 
-export const dynamic = 'force-dynamic' // ✅ บอก Next.js ว่านี่คือ dynamic page
+export const dynamicMode = 'force-dynamic' // เปลี่ยนชื่อไม่ชนกับ import
 
-import loadDynamic from 'next/dynamic' // ✅ เปลี่ยนชื่อ dynamic เพื่อเลี่ยงชนกัน
+import dynamic from 'next/dynamic'
 
-// โหลด component แบบ dynamic และปิด SSR
-const CreditCardClient = loadDynamic(() => import('./CreditCardClient'), {
+const CreditCardClient = dynamic(() => import('./CreditCardClient'), {
   ssr: false,
 })
 
