@@ -1,7 +1,11 @@
+ //src/app/payments/PaymentForm.tsx
+
 'use client'
 
 import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+
+export const dynamic = 'force-dynamic' // บังคับ dynamic rendering
 
 export default function PaymentForm() {
   const [orderId, setOrderId] = useState('')
