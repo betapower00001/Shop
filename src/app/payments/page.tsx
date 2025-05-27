@@ -1,12 +1,14 @@
  //src/app/payments/page.tsx
 
+import React, { Suspense } from 'react';
 import dynamic from 'next/dynamic';
 
-const PaymentsClient = dynamic(() => import('./PaymentClient'), { 
-  ssr: false,
-  loading: () => <p>Loading payments...</p>,
-});
+const PaymentsClient = dynamic(() => import('./PaymentClient'), { ssr: false });
 
 export default function PaymentsPage() {
-  return <PaymentsClient />;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PaymentsClient />
+    </Suspense>
+  );
 }
