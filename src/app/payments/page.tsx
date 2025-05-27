@@ -1,10 +1,12 @@
 // src/app/payments/page.tsx
 
-import React from 'react';
-import PaymentsClient from './PaymentClient'; // 👉 import ปกติ
+import React, { Suspense } from 'react';
+import PaymentsClient from './PaymentClient';
 
 export default function PaymentsPage() {
   return (
-    <PaymentsClient />
+    <Suspense fallback={<div>Loading payment...</div>}>
+      <PaymentsClient />
+    </Suspense>
   );
 }
