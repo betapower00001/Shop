@@ -1,27 +1,20 @@
  //src/app/payments/PaymentForm.tsx
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
-export const dynamic = 'force-dynamic' // บังคับ dynamic rendering
+type Props = {
+  orderId: string
+}
 
-export default function PaymentForm() {
-  const [orderId, setOrderId] = useState('')
+export default function PaymentForm({ orderId: orderIdFromQuery }: Props) {
   const [paymentMethod, setPaymentMethod] = useState('promptpay')
   const [image, setImage] = useState<File | null>(null)
   const router = useRouter()
-  const searchParams = useSearchParams()
-
-  useEffect(() => {
-    const idFromQuery = searchParams.get('orderId')
-    if (idFromQuery) {
-      setOrderId(idFromQuery)
-    }
-  }, [searchParams])
 
   const handleSubmit = async () => {
-    if (!orderId) {
+    if (!orderIdFromQuery) {
       alert('ไม่พบรหัสคำสั่งซื้อ')
       return
     }
@@ -32,7 +25,7 @@ export default function PaymentForm() {
     }
 
     const formData = new FormData()
-    formData.append('orderId', orderId)
+    formData.append('orderId', orderIdFromQuery)
     formData.append('paymentMethod', paymentMethod)
     if (image) {
       formData.append('file', image)
@@ -59,7 +52,7 @@ export default function PaymentForm() {
       <div className="mb-4">
         <label>เลขที่คำสั่งซื้อ:</label>
         <input
-          value={orderId}
+          value={orderIdFromQuery}
           readOnly
           className="w-full border px-2 py-1 bg-gray-100 text-gray-600"
         />
