@@ -1,6 +1,6 @@
 // src/app/payments/credit-card/page.tsx
 
-'use client' // เพิ่มตรงนี้เลย
+'use client' // 👈 บอกว่าไฟล์นี้เป็น Client Component
 
 import { useSearchParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
