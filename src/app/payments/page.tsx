@@ -1,11 +1,11 @@
- //src/app/payments/page.tsx
+// src/app/payments/page.tsx
 
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
-export default function PaymentPage() {
+function PaymentForm() {
   const [orderId, setOrderId] = useState('')
   const [paymentMethod, setPaymentMethod] = useState('promptpay')
   const [image, setImage] = useState<File | null>(null)
@@ -25,7 +25,6 @@ export default function PaymentPage() {
       return
     }
 
-    // ถ้าวิธีชำระเงินเป็น cod (เก็บเงินปลายทาง) ไม่ต้องแนบสลิป
     if ((paymentMethod === 'promptpay' || paymentMethod === 'bank_transfer') && !image) {
       alert('กรุณาแนบสลิปการโอน')
       return
@@ -96,5 +95,13 @@ export default function PaymentPage() {
         ส่งข้อมูลชำระเงิน
       </button>
     </div>
+  )
+}
+
+export default function PaymentPage() {
+  return (
+    <Suspense fallback={<div>กำลังโหลด...</div>}>
+      <PaymentForm />
+    </Suspense>
   )
 }
