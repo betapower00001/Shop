@@ -1,4 +1,4 @@
-// src/app/payments/credit-card/CreditCardClient.tsx
+// src/app/payments/credit-card/CreditCardClient.tsx.
 'use client'
 
 import { useEffect } from 'react'
