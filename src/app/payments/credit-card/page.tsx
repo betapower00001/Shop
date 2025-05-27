@@ -1,23 +1,17 @@
 // src/app/payments/credit-card/page.tsx
 
-import dynamic from 'next/dynamic';
-import { Suspense } from 'react'; // 👈 สำคัญ: นำเข้า Suspense จาก React
+// ลบ dynamic และ Suspense ออกจากไฟล์นี้
+import CreditCardClient from './CreditCardClient'; // 👈 นำเข้า CreditCardClient โดยตรง
 
-// Dynamic import ของ CreditCardClient
-// ssr: false จะป้องกันไม่ให้ CreditCardClient ถูก render บน Server
-// loading: จะแสดง fallback ในขณะที่ CreditCardClient กำลังโหลดบน Client
-const CreditCardClient = dynamic(() => import('./CreditCardClient'), {
-  ssr: false, // ปิดการ render ฝั่ง server สำหรับคอมโพเนนต์นี้
-  loading: () => <p>กำลังโหลดหน้าชำระเงิน...</p>, // แสดงข้อความ Loading ในขณะที่คอมโพเนนต์กำลังโหลด
-});
+// เนื่องจากการเรียกใช้ useSearchParams จะทำให้ทั้งหน้าเป็น Client Component
+// และ 'use client' จะถูกประกาศใน CreditCardClient.tsx อยู่แล้ว
+// Next.js จะจัดการเรื่องนี้ให้เอง
 
 export default function CreditCardPage() {
   return (
-    // 👈 สำคัญ: ห่อ CreditCardClient ด้วย Suspense
-    // Suspense จะช่วยจัดการการโหลดของ Client Component ที่ใช้ Client-side Hooks
-    // โดยจะแสดง fallback ในระหว่างที่คอมโพเนนต์จริงกำลังโหลด/Hydrate บน Client
-    <Suspense fallback={<div>กำลังเตรียมหน้าชำระเงิน...</div>}>
-      <CreditCardClient />
-    </Suspense>
+    // เรียกใช้ CreditCardClient โดยตรง
+    // เนื่องจาก CreditCardClient มี 'use client' อยู่แล้ว
+    // Next.js จะรู้ว่าหน้านี้ต้องถูก Client-side Render
+    <CreditCardClient />
   );
 }
