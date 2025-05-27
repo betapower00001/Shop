@@ -1,44 +1,13 @@
- //src/app/payments/credit-card/page.tsx
+// src/app/payments/credit-card/page.tsx
+import { Suspense } from 'react'
+import CreditCardClient from './CreditCardClient'
 
-'use client'
-
-import { useEffect } from 'react'
-import { useSearchParams, useRouter } from 'next/navigation'
-
-export const dynamic = 'force-dynamic' // บังคับ dynamic rendering
+export const dynamic = 'force-dynamic'
 
 export default function CreditCardPage() {
-  const router = useRouter()
-  const orderId = useSearchParams().get('orderId')
-
-  useEffect(() => {
-    const simulatePayment = async () => {
-      await new Promise((r) => setTimeout(r, 2000)) // mock delay
-      const formData = new FormData()
-      formData.append('orderId', orderId || '')
-      formData.append('paymentMethod', 'credit_card')
-
-      const res = await fetch('/api/payments', {
-        method: 'POST',
-        body: formData,
-      })
-
-      if (res.ok) {
-        alert('ชำระเงินสำเร็จ')
-        router.push('/order')
-      } else {
-        alert('เกิดข้อผิดพลาดในการชำระเงิน')
-      }
-    }
-
-    if (orderId) {
-      simulatePayment()
-    }
-  }, [orderId, router])
-
   return (
-    <div className="p-4">
-      <h1 className="text-xl font-bold">กำลังดำเนินการชำระเงินผ่านบัตรเครดิต...</h1>
-    </div>
+    <Suspense fallback={<div className="p-4">Loading...</div>}>
+      <CreditCardClient />
+    </Suspense>
   )
 }
