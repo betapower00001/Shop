@@ -2,19 +2,27 @@
 
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 
 export default function CreditCardClient() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const orderId = searchParams.get('orderId')
+
+  // แก้ตรงนี้: ใช้ state เพื่อดึง orderId หลัง render แล้วเท่านั้น
+  const [orderId, setOrderId] = useState<string | null>(null)
+
+  useEffect(() => {
+    setOrderId(searchParams.get('orderId'))
+  }, [searchParams])
 
   useEffect(() => {
     const simulatePayment = async () => {
+      if (!orderId) return
       await new Promise((r) => setTimeout(r, 2000))
+
       const formData = new FormData()
-      formData.append('orderId', orderId || '')
+      formData.append('orderId', orderId)
       formData.append('paymentMethod', 'credit_card')
 
       const res = await fetch('/api/payments', {
@@ -30,9 +38,7 @@ export default function CreditCardClient() {
       }
     }
 
-    if (orderId) {
-      simulatePayment()
-    }
+    simulatePayment()
   }, [orderId, router])
 
   return (
