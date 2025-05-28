@@ -3,7 +3,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
-// GET: ดึงสินค้าตาม ID
 export async function GET(_req: Request, { params }: { params: { id: string } }) {
   try {
     const id = parseInt(params.id, 10)
@@ -24,8 +23,7 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
   }
 }
 
-// PUT: อัปเดตสินค้า
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PATCH(req: Request, { params }: { params: { id: string } }) {
   try {
     const id = parseInt(params.id, 10)
     if (isNaN(id)) {
@@ -33,27 +31,29 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
     }
 
     const body = await req.json()
-    const { name, description, price, imageUrl, stock } = body
+    const { name, description, price, imageUrl, stock, isActive } = body
+
+    const dataToUpdate: any = {}
+
+    if (name !== undefined) dataToUpdate.name = name
+    if (description !== undefined) dataToUpdate.description = description
+    if (price !== undefined) dataToUpdate.price = parseFloat(price)
+    if (imageUrl !== undefined) dataToUpdate.imageUrl = imageUrl
+    if (stock !== undefined) dataToUpdate.stock = parseInt(stock)
+    if (isActive !== undefined) dataToUpdate.isActive = isActive
 
     const updated = await prisma.product.update({
       where: { id },
-      data: {
-        name,
-        description,
-        price: parseFloat(price),
-        imageUrl,
-        stock: parseInt(stock),
-      },
+      data: dataToUpdate,
     })
 
     return NextResponse.json(updated)
   } catch (err) {
-    console.error('❌ PUT Error:', err)
+    console.error('❌ PATCH Error:', err)
     return NextResponse.json({ error: 'Failed to update product' }, { status: 500 })
   }
 }
 
-// DELETE: ลบสินค้า
 export async function DELETE(_req: Request, { params }: { params: { id: string } }) {
   try {
     const id = parseInt(params.id, 10)
