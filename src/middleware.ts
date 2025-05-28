@@ -6,6 +6,7 @@ import type { NextRequest } from "next/server";
 
 export async function middleware(req: NextRequest) {
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  console.log("🔐 token in middleware:", token);
   const url = req.nextUrl.clone();
 
   if (url.pathname.startsWith("/admin")) {
@@ -20,5 +21,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/admin", "/admin/:path*"], // ✅ ต้องมี "/admin" ด้วย
 };
