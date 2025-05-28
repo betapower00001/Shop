@@ -1,4 +1,4 @@
-// src/app/payments/credit-card/page.tsx
+// src/app/payments/credit-card/page.tsx.
 
 import React, { Suspense } from 'react'
 import CreditCardClient from './CreditCardClient'
