@@ -3,20 +3,11 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
-// ฟังก์ชันช่วยแปลง id
-function parseId(idParam: string): number | null {
-  const id = parseInt(idParam, 10)
-  return isNaN(id) ? null : id
-}
-
 // GET: ดึงสินค้าตาม ID
-export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(_req: Request, { params }: { params: { id: string } }) {
   try {
-    const resolvedParams = await params
-    const idParam = resolvedParams.id
-
-    const id = parseId(idParam)
-    if (id === null) {
+    const id = parseInt(params.id, 10)
+    if (isNaN(id)) {
       return NextResponse.json({ error: 'Invalid id parameter' }, { status: 400 })
     }
 
@@ -34,13 +25,10 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 }
 
 // PUT: อัปเดตสินค้า
-export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function PUT(req: Request, { params }: { params: { id: string } }) {
   try {
-    const resolvedParams = await params
-    const idParam = resolvedParams.id
-
-    const id = parseId(idParam)
-    if (id === null) {
+    const id = parseInt(params.id, 10)
+    if (isNaN(id)) {
       return NextResponse.json({ error: 'Invalid id parameter' }, { status: 400 })
     }
 
@@ -66,13 +54,10 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
 }
 
 // DELETE: ลบสินค้า
-export async function DELETE(_req: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(_req: Request, { params }: { params: { id: string } }) {
   try {
-    const resolvedParams = await params
-    const idParam = resolvedParams.id
-
-    const id = parseId(idParam)
-    if (id === null) {
+    const id = parseInt(params.id, 10)
+    if (isNaN(id)) {
       return NextResponse.json({ error: 'Invalid id parameter' }, { status: 400 })
     }
 
