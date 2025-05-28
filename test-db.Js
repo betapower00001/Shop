@@ -1,5 +1,8 @@
-require('dotenv').config(); // <== ต้องเพิ่มบรรทัดนี้
-const { PrismaClient } = require('@prisma/client');
+// test-db.js (ESM syntax)
+import dotenv from 'dotenv';
+dotenv.config();
+
+import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function testConnection() {
