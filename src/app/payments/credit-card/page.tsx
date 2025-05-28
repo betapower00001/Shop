@@ -1,14 +1,11 @@
 // src/app/payments/credit-card/page.tsx.
 
-import { Suspense } from 'react'
+import React, { Suspense } from 'react'
 import CreditCardClient from './CreditCardClient'
-
-export const dynamic = 'force-dynamic'
-export const fetchCache = 'force-no-store'
 
 export default function CreditCardPage() {
   return (
-    <Suspense fallback={<div className="p-4">Loading...</div>}>
+    <Suspense fallback={<div>Loading...</div>}>
       <CreditCardClient />
     </Suspense>
   )

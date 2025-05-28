@@ -1,15 +1,12 @@
-// src/app/payments/credit-card/CreditCardClient.tsx.
-
+// src/app/payments/credit-card/CreditCardClient.tsx
 'use client'
 
-import { useEffect, useState } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 export default function CreditCardClient() {
-  const router = useRouter()
   const searchParams = useSearchParams()
-
-  // แก้ตรงนี้: ใช้ state เพื่อดึง orderId หลัง render แล้วเท่านั้น
+  const router = useRouter()
   const [orderId, setOrderId] = useState<string | null>(null)
 
   useEffect(() => {
@@ -17,8 +14,9 @@ export default function CreditCardClient() {
   }, [searchParams])
 
   useEffect(() => {
+    if (!orderId) return
+
     const simulatePayment = async () => {
-      if (!orderId) return
       await new Promise((r) => setTimeout(r, 2000))
 
       const formData = new FormData()
@@ -31,10 +29,10 @@ export default function CreditCardClient() {
       })
 
       if (res.ok) {
-        alert('ชำระเงินสำเร็จ')
+        console.log('ชำระเงินสำเร็จ')
         router.push('/order')
       } else {
-        alert('เกิดข้อผิดพลาดในการชำระเงิน')
+        console.error('เกิดข้อผิดพลาดในการชำระเงิน')
       }
     }
 
