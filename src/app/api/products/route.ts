@@ -1,9 +1,21 @@
+// src/app/api/products/route.ts
+
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    const products = await prisma.product.findMany()
+    const url = new URL(req.url)
+    const isActiveParam = url.searchParams.get('isActive')
+
+    let where = {}
+    if (isActiveParam === 'true') {
+      where = { isActive: true }
+    } else if (isActiveParam === 'false') {
+      where = { isActive: false }
+    }
+
+    const products = await prisma.product.findMany({ where })
     return NextResponse.json(products)
   } catch (err) {
     console.error('❌ Error fetching products:', err)
@@ -14,7 +26,7 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-    const { name, description, price, imageUrl, stock } = body
+    const { name, description, price, imageUrl, stock, isActive } = body
 
     const product = await prisma.product.create({
       data: {
@@ -23,6 +35,7 @@ export async function POST(req: Request) {
         price: parseFloat(price),
         imageUrl,
         stock: parseInt(stock),
+        isActive: isActive ?? true,
       },
     })
 
