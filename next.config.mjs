@@ -18,7 +18,9 @@ const nextConfig = {
       'down-th.img.susercontent.com',
     ],
   },
+  experimental: {
+    nodeMiddleware: true, // <-- เพิ่มบรรทัดนี้
+  },
 };
 
 export default nextConfig;
-
