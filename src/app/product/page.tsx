@@ -22,7 +22,7 @@ export default async function ProductPage() {
           <p style={{ textAlign: "center" }}>ยังไม่มีสินค้าพร้อมจำหน่าย</p>
         ) : (
           products.map((product) => (
-            <div key={product.id} className="col-12 col-sm-6 col-lg-4">
+            <div key={product.id} className="col-12 col-sm-6 col-lg-4 overflow-hidden">
               <ProductCard product={product} />
             </div>
           ))
