@@ -1,4 +1,4 @@
-// src/app/products/page.tsx
+// src/app/products/page.tsx 
   
 import { prisma } from "@/lib/prisma";
 import ProductCard from "@/components/ProductCard";

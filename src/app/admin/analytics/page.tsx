@@ -1,4 +1,4 @@
-// src/app/admin/analytics/page.tsx
+// src/app/admin/analytics/page.tsx 
 import { prisma } from '@/lib/prisma';
 
 export default async function AdminAnalyticsPage() {
