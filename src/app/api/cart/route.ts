@@ -56,6 +56,19 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "ข้อมูลไม่ครบ" }, { status: 400 });
     }
 
+    // ตรวจสอบว่ามี user นี้ใน DB หรือไม่
+    const userExists = await prisma.user.findUnique({ where: { id: userId } });
+    if (!userExists) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    // ตรวจสอบว่ามี product นี้ใน DB หรือไม่
+    const productExists = await prisma.product.findUnique({ where: { id: productId } });
+    if (!productExists) {
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
+    }
+
+    // ถ้ามีครบ ให้ทำ upsert ตามปกติ
     await prisma.cartItem.upsert({
       where: {
         userId_productId: {
