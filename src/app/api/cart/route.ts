@@ -4,13 +4,13 @@ import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 interface CartRequestBody {
-  userId?: number;
+  userId?: string;
   productId?: number;
   quantity?: number;
   cartItemId?: number;
 }
 
-// GET - ดึงข้อมูลตะกร้าของ userId จาก query param (default = 1)
+// GET
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const userIdParam = url.searchParams.get("userId");
@@ -20,9 +20,8 @@ export async function GET(request: NextRequest) {
   }
 
   const userId = parseInt(userIdParam, 10);
-
   if (isNaN(userId)) {
-    return NextResponse.json({ error: "userId ไม่ถูกต้อง" }, { status: 400 });
+    return NextResponse.json({ error: "userId ต้องเป็นตัวเลข" }, { status: 400 });
   }
 
   try {
@@ -47,28 +46,29 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST - เพิ่มสินค้าลงตะกร้า หรือเพิ่มจำนวนถ้ามีอยู่แล้ว
+// POST
 export async function POST(request: Request) {
   try {
-    const { userId, productId, quantity } = (await request.json()) as CartRequestBody;
+    const body = (await request.json()) as CartRequestBody;
 
-    if (!userId || !productId || !quantity) {
-      return NextResponse.json({ error: "ข้อมูลไม่ครบ" }, { status: 400 });
+    const userId = body.userId ? parseInt(body.userId, 10) : undefined;
+    const productId = body.productId;
+    const quantity = body.quantity;
+
+    if (!userId || isNaN(userId) || !productId || !quantity || quantity < 1) {
+      return NextResponse.json({ error: "ข้อมูลไม่ครบหรือข้อมูลไม่ถูกต้อง" }, { status: 400 });
     }
 
-    // ตรวจสอบว่ามี user นี้ใน DB หรือไม่
     const userExists = await prisma.user.findUnique({ where: { id: userId } });
     if (!userExists) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    // ตรวจสอบว่ามี product นี้ใน DB หรือไม่
     const productExists = await prisma.product.findUnique({ where: { id: productId } });
     if (!productExists) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
 
-    // ถ้ามีครบ ให้ทำ upsert ตามปกติ
     await prisma.cartItem.upsert({
       where: {
         userId_productId: {
@@ -95,10 +95,12 @@ export async function POST(request: Request) {
   }
 }
 
-// PUT - อัปเดตจำนวนสินค้าในตะกร้า
+// PUT
 export async function PUT(request: Request) {
   try {
-    const { cartItemId, quantity } = (await request.json()) as CartRequestBody;
+    const body = (await request.json()) as CartRequestBody;
+    const cartItemId = body.cartItemId;
+    const quantity = body.quantity;
 
     if (!cartItemId || !quantity || quantity < 1) {
       return NextResponse.json({ error: "ข้อมูลไม่ครบหรือจำนวนไม่ถูกต้อง" }, { status: 400 });
@@ -116,7 +118,7 @@ export async function PUT(request: Request) {
   }
 }
 
-// DELETE - ลบสินค้าออกจากตะกร้า (รับ cartItemId จาก query param)
+// DELETE
 export async function DELETE(request: NextRequest) {
   const url = new URL(request.url);
   const cartItemIdParam = url.searchParams.get("cartItemId");
@@ -126,7 +128,6 @@ export async function DELETE(request: NextRequest) {
   }
 
   const cartItemId = parseInt(cartItemIdParam, 10);
-
   if (isNaN(cartItemId)) {
     return NextResponse.json({ error: "cartItemId ไม่ถูกต้อง" }, { status: 400 });
   }

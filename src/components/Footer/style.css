@@ -1,0 +1,40 @@
+.custom-footer {
+  background-color: #061850;
+}
+
+.footer-main a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.footer-main a:hover {
+  text-decoration: underline;
+}
+
+.social-icon-sm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  transition: 0.3s ease;
+  color: white;
+}
+
+.social-icon-sm:hover {
+  background-color: white;
+  color: #287bff;
+}
+
+@media (max-width: 768px) {
+  .footer-main {
+    text-align: center;
+  }
+
+  .footer-main img {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

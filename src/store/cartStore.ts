@@ -13,14 +13,14 @@ type CartItem = {
 };
 
 type CartState = {
-  userId: number | null;          // เก็บ userId ไว้ใน store
+  userId: string | null;
   items: CartItem[];
   totalItems: number;
   totalPrice: number;
 
-  setUserId: (userId: number) => void;   // ตั้ง userId
+  setUserId: (userId: string) => void;
 
-  loadCart: (userId?: number) => Promise<void>;
+  loadCart: (userId?: string) => Promise<void>;
   addItem: (product: Product, quantity?: number) => Promise<void>;
   removeItem: (cartItemId: number) => Promise<void>;
   updateQuantity: (cartItemId: number, quantity: number) => Promise<void>;
@@ -38,21 +38,21 @@ export const useCartStore = create<CartState>((set, get) => ({
     set({ userId });
   },
 
-  loadCart: async (userId) => {
-    const id = userId ?? get().userId;
-    if (!id) {
-      console.warn("loadCart: userId ไม่ได้ตั้งค่า");
+  loadCart: async (userIdParam) => {
+    const userId = userIdParam ?? get().userId;
+    if (!userId) {
+      console.warn("loadCart: userId ไม่ได้ตั้งค่าหรือไม่ถูกต้อง");
       return;
     }
     try {
-      const res = await fetch(`/api/cart?userId=${id}`);
+      const res = await fetch(`/api/cart?userId=${encodeURIComponent(userId)}`);
       if (!res.ok) throw new Error("โหลดตะกร้าล้มเหลว");
       const data: CartItem[] = await res.json();
       set({
         items: data,
         totalItems: data.reduce((sum, item) => sum + item.quantity, 0),
         totalPrice: data.reduce((sum, item) => sum + item.price * item.quantity, 0),
-        userId: id,
+        userId,
       });
     } catch (error) {
       console.error("❌ โหลดตะกร้าล้มเหลว:", error);
@@ -62,7 +62,7 @@ export const useCartStore = create<CartState>((set, get) => ({
   addItem: async (product, quantity = 1) => {
     const userId = get().userId;
     if (!userId) {
-      console.warn("addItem: userId ไม่ได้ตั้งค่า");
+      console.warn("addItem: userId ไม่ได้ตั้งค่าหรือไม่ถูกต้อง");
       return;
     }
     try {
@@ -88,7 +88,7 @@ export const useCartStore = create<CartState>((set, get) => ({
   removeItem: async (cartItemId) => {
     const userId = get().userId;
     if (!userId) {
-      console.warn("removeItem: userId ไม่ได้ตั้งค่า");
+      console.warn("removeItem: userId ไม่ได้ตั้งค่าหรือไม่ถูกต้อง");
       return;
     }
     try {
@@ -105,7 +105,7 @@ export const useCartStore = create<CartState>((set, get) => ({
   updateQuantity: async (cartItemId, quantity) => {
     const userId = get().userId;
     if (!userId) {
-      console.warn("updateQuantity: userId ไม่ได้ตั้งค่า");
+      console.warn("updateQuantity: userId ไม่ได้ตั้งค่าหรือไม่ถูกต้อง");
       return;
     }
     try {

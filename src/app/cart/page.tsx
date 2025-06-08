@@ -6,6 +6,8 @@ import React, { useEffect } from "react";
 import { useCartStore } from "@/store/cartStore";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { Database } from "@/types/supabase"; // แก้ตาม path schema ของคุณ
 
 export default function CartPage() {
   const {
@@ -15,12 +17,25 @@ export default function CartPage() {
     loadCart,
     removeItem,
     updateQuantity,
+    setUserId,
   } = useCartStore();
-  const router = useRouter();
 
+  const router = useRouter();
+  const supabase = createClientComponentClient<Database>();
+
+  // ✅ โหลด userId จาก Supabase แล้วตั้งค่าใน store
   useEffect(() => {
-    loadCart(1); // สมมุติ userId=1 แบบชั่วคราว
-  }, [loadCart]);
+    const loadUser = async () => {
+      const { data } = await supabase.auth.getUser();
+      const uid = data?.user?.id;
+
+      if (uid) {
+        setUserId(uid);
+        loadCart(uid);
+      }
+    };
+    loadUser();
+  }, []);
 
   useEffect(() => {
     console.log("🛒 ตะกร้าล่าสุด:", items);

@@ -1,22 +1,32 @@
 // src/components/ProductCard.tsx
 
+// src/components/ProductCard.tsx
+
 "use client";
 
 import { Product } from "@prisma/client";
 import { useCartStore } from "@/store/cartStore";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 export default function ProductCard({ product }: { product: Product }) {
+  const { data: session } = useSession();
+  const setUserId = useCartStore((state) => state.setUserId);
   const addToCart = useCartStore((state) => state.addItem);
+
   const [isOpen, setIsOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [popupQuantity, setPopupQuantity] = useState(1);
 
-  // ป้องกัน null หรือ undefined
+  useEffect(() => {
+    if (session?.user?.id) {
+      setUserId(session.user.id);
+    }
+  }, [session?.user?.id]);
+
   const safeText = (text: string | null | undefined) => text ?? "";
 
-  // ฟังก์ชันเพิ่มลดจำนวนสินค้า
   const changeQuantity = (
     current: number,
     delta: number,
@@ -26,11 +36,17 @@ export default function ProductCard({ product }: { product: Product }) {
     if (newQty >= 1) setFn(newQty);
   };
 
+  const handleAddToCart = (qty: number) => {
+    if (!session?.user?.id) {
+      alert("กรุณาเข้าสู่ระบบก่อนสั่งซื้อ");
+      return;
+    }
+    addToCart(product, qty);
+  };
+
   return (
     <>
-      {/* การ์ดสินค้า */}
       <div className="card h-full overflow-hidden border border-gray-200 rounded-lg shadow transition-transform duration-300 hover:scale-105 hover:shadow-xl relative group">
-        {/* รูปภาพ */}
         <div
           className="relative w-full h-60 bg-gray-100 cursor-pointer"
           onClick={() => setIsOpen(true)}
@@ -43,7 +59,6 @@ export default function ProductCard({ product }: { product: Product }) {
           />
         </div>
 
-        {/* เนื้อหาสินค้า */}
         <div className="p-4 flex flex-col h-full">
           <h5
             className="font-semibold text-lg truncate mb-1 cursor-pointer hover:text-blue-600"
@@ -58,7 +73,6 @@ export default function ProductCard({ product }: { product: Product }) {
             ฿{product.price.toLocaleString()}
           </p>
 
-          {/* ปุ่มเพิ่มลดจำนวน */}
           <div className="flex items-center gap-2 mb-4">
             <button
               onClick={() => changeQuantity(quantity, -1, setQuantity)}
@@ -77,21 +91,18 @@ export default function ProductCard({ product }: { product: Product }) {
             </button>
           </div>
 
-          {/* ปุ่มสั่งซื้อ */}
           <button
             className="mt-auto bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-            onClick={() => addToCart(product, quantity)}
+            onClick={() => handleAddToCart(quantity)}
           >
             สั่งซื้อ
           </button>
         </div>
       </div>
 
-      {/* Modal popup แสดงรายละเอียดสินค้า */}
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 animate-fadeIn">
           <div className="bg-white rounded-lg p-6 w-full max-w-4xl mx-4 md:flex shadow-lg animate-slideDown relative">
-            {/* ปุ่มปิด */}
             <button
               className="absolute top-2 right-2 text-gray-500 hover:text-red-600 text-2xl"
               onClick={() => setIsOpen(false)}
@@ -100,7 +111,6 @@ export default function ProductCard({ product }: { product: Product }) {
               ×
             </button>
 
-            {/* รูปภาพสินค้า */}
             <div className="w-full md:w-1/2 relative h-72 md:h-auto">
               <Image
                 src={product.imageUrl || "/default-product.jpg"}
@@ -110,16 +120,16 @@ export default function ProductCard({ product }: { product: Product }) {
               />
             </div>
 
-            {/* รายละเอียดสินค้า */}
             <div className="md:w-1/2 md:pl-8 mt-6 md:mt-0 flex flex-col">
               <h2 className="text-2xl font-bold">{safeText(product.name)}</h2>
               <p className="text-lg text-gray-600 mt-2">
                 ฿{product.price.toLocaleString()}{" "}
                 <span className="text-sm text-green-600">ฟรีค่าจัดส่ง</span>
               </p>
-              <p className="mt-4 text-gray-700">{safeText(product.description)}</p>
+              <p className="mt-4 text-gray-700">
+                {safeText(product.description)}
+              </p>
 
-              {/* ปุ่มเพิ่มลดจำนวนใน popup */}
               <div className="flex items-center gap-2 mt-6">
                 <button
                   onClick={() => changeQuantity(popupQuantity, -1, setPopupQuantity)}
@@ -138,11 +148,10 @@ export default function ProductCard({ product }: { product: Product }) {
                 </button>
               </div>
 
-              {/* ปุ่มสั่งซื้อและปิด */}
               <div className="mt-6 flex gap-4">
                 <button
                   onClick={() => {
-                    addToCart(product, popupQuantity);
+                    handleAddToCart(popupQuantity);
                     setIsOpen(false);
                   }}
                   className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
